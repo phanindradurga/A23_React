@@ -25,7 +25,7 @@ const MyInvitesList = () => {
         return (
             <div style={{ ...styles.listheader, marginTop: '1rem', backgroundColor: '#ebbe69', boxSizing: 'border-box', borderColor: '#C9C9C9', borderRadius: '0.2rem', borderStyle: 'solid' }}>
                 {headerTitles.map((title, index) => {
-                    return <span style={{ width: `${widthPercentage[index]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>{title}</span>
+                    return <span style={{ width: `${widthPercentage[index]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', fontSize: '0.8rem' }}>{title}</span>
                 })}
             </div>
         )
@@ -38,7 +38,7 @@ const MyInvitesList = () => {
                     return <div style={{ display: 'flex', width: '100%', boxSizing: 'border-box', backgroundColor: (index % 2 === 0) ? '#FFFFFF' : '#F7F7F7' }}>
                         {headerTitles.map((title, index) => {
                             return (
-                                <span style={{ width: `${widthPercentage[index]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>{title}</span>
+                                <span style={{ width: `${widthPercentage[index]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', fontSize: '0.8rem' }}>{title}</span>
                             )
                         })}
                     </div>
