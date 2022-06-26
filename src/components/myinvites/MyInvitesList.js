@@ -1,9 +1,5 @@
 import React from 'react'
 
-import Checkbox from '@material-ui/core/Checkbox';
-import CircleChecked from '@material-ui/icons/CheckCircleOutline';
-import CircleCheckedFilled from '@material-ui/icons/CheckCircle';
-import CircleUnchecked from '@material-ui/icons/RadioButtonUnchecked';
 import { InviteData } from './InviteData'
 const MyInvitesList = () => {
 
@@ -51,10 +47,7 @@ const MyInvitesList = () => {
                 {records.map((records, index) => {
                     return <div style={{ display: 'flex', width: '100%', boxSizing: 'border-box', backgroundColor: (index % 2 === 0) ? '#FFFFFF' : '#F7F7F7' }}>
                         <div style={{ width: `${widthPercentage[0]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', alignSelf: 'center' }}>
-                            <Checkbox
-                                icon={<CircleUnchecked color='primary' />}
-                                checkedIcon={<CircleChecked color='primary' />
-                                } />
+                            1
                         </div>
                         <div style={{ width: `${widthPercentage[1]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', fontSize: '0.6rem', alignSelf: 'center', textAlign: 'start' }}>
                             {records.emailMob}
