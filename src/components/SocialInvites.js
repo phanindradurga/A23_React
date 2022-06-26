@@ -1,3 +1,5 @@
+import React from 'react'
+
 import wa_share_icon from '../images/rne_whatsapp_icon.png'
 import fb_share_icon from '../images/rne_fb_icon.png'
 import gmail_share_icon from '../images/rne_email_icon.png'

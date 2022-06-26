@@ -1,3 +1,4 @@
+import React from 'react'
 
 import noDataImage from '../../images/pf_rne_myrewards_img.png'
 

@@ -1,4 +1,6 @@
 import logo from './logo.svg';
+import React from 'react'
+
 import './App.css';
 import HeaderTab from './components/HeaderTab';
 import RnESteps from './components/RnESteps';

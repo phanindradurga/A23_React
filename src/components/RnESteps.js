@@ -1,3 +1,5 @@
+import React from 'react'
+
 import referNEarn1 from '../images/pf_rne_1.png'
 import referNEarn2 from '../images/pf_rne_2.png'
 import referNEarn3 from '../images/pf_rne_3.png'
