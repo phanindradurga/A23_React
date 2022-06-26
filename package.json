@@ -21,6 +21,10 @@
     "preinstall": "npx npm-force-resolutions",
     "heroku-postbuild": "npm --legacy-peer-deps"
   },
+  "engines": {
+    "node": "16.15.1",
+    "npm": "8.5.5"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
