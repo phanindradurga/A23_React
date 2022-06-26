@@ -8,7 +8,7 @@ const MyRewards = ({ clickHandler }) => {
 
     return (
         <div>
-            {(isRewardsEmpty === true) ? EmptyReward({ clickHandler: clickHandler }) : <div>Rewards UI</div>}
+            {(isRewardsEmpty === true) ? EmptyReward({ clickHandler: clickHandler }) : <div>Rewards UIII</div>}
         </div>
     )
 }
