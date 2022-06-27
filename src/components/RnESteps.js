@@ -6,7 +6,7 @@ import referNEarn3 from '../images/pf_rne_3.png'
 import arrow from '../images/pf_rne_banner_arrow.png'
 
 
-const RnESteps = (props) => {
+const RnESteps = ({ data }) => {
 
 
 
@@ -69,7 +69,7 @@ const RnESteps = (props) => {
                     <img src={referNEarn1} style={{ width: '25px', height: '32px', marginBottom: '5px' }} />
                     <span style={{ ...styles.stepText1 }}>Friend Registers</span>
                     <span style={{ ...styles.stepText2 }}>Friend gets upto</span>
-                    <span style={{ ...styles.stepText3 }} >$ 200</span>
+                    <span style={{ ...styles.stepText3 }} >{data.friendRegisters ? `\u20B9${data.friendRegisters}` : ''}</span>
                 </div>
 
                 <div style={{ ...styles.stepImage }}>
@@ -80,7 +80,7 @@ const RnESteps = (props) => {
                     <img src={referNEarn2} style={{ width: '30px', height: '32px', marginBottom: '5px' }} />
                     <span style={{ ...styles.stepText1 }}>Friend Purchases</span>
                     <span style={{ ...styles.stepText2 }}>You get upto</span>
-                    <span style={{ ...styles.stepText3 }}>$ 200</span>
+                    <span style={{ ...styles.stepText3 }}>{data.friendPurchases ? `\u20B9${data.friendPurchases}` : ''}</span>
                 </div>
 
                 <div style={{ ...styles.stepImage }}>
@@ -91,7 +91,7 @@ const RnESteps = (props) => {
                     <img src={referNEarn3} style={{ width: '34px', height: '32', marginBottom: '5px' }} />
                     <span style={{ ...styles.stepText1 }}>Friend Plays</span>
                     <span style={{ ...styles.stepText2 }}>You get upto</span>
-                    <span style={{ ...styles.stepText3 }}>$ 200</span>
+                    <span style={{ ...styles.stepText3 }}>{data.friendPlays ? `\u20B9${data.friendPlays}` : ''}</span>
                 </div>
             </div>
         </div>
