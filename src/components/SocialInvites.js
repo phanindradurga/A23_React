@@ -15,6 +15,19 @@ const SocialInvites = ({ renData }) => {
     const [refCode, setRefCode] = useState("");
 
 
+    const openFbPopUp = () => {
+        var fburl = '';
+        var fbimgurl = 'http://';
+        var fbtitle = 'Your title';
+        var fbsummary = "your description";
+        var sharerURL = "http://www.facebook.com/sharer/sharer.php?s=100&p[url]=" + encodeURI(fburl) + "&p[images][0]=" + encodeURI(fbimgurl) + "&p[title]=" + encodeURI(fbtitle) + "&p[summary]=" + encodeURI(fbsummary);
+        sharerURL = 'https://www.facebook.com/dialog/share?app_id=87741124305&href=https://youtube.com/watch?v=3hxE7Af98AI&feature=share&display=popup'
+        window.open(
+            sharerURL,
+            'facebook-share-dialog',
+            'width=626,height=436');
+        return false;
+    }
 
     return (
         <div style={{ ...styles.maincontainerStyle }}>
@@ -33,7 +46,7 @@ const SocialInvites = ({ renData }) => {
                 </div>
                 <div style={{ ...styles.iconsContainer }}>
                     <a href={"https://web.whatsapp.com/send?text=" + renData.message}><img src={wa_share_icon} style={{ ...styles.iconStyle }} /></a>
-                    <img src={fb_share_icon} style={{ ...styles.iconStyle }} />
+                    <img onClick={() => openFbPopUp()} src={fb_share_icon} style={{ ...styles.iconStyle }} />
                     <img src={gmail_share_icon} style={{ ...styles.iconStyle }} />
                     <img src={message_share_icon} style={{ ...styles.iconStyle }} />
                     <img src={more_share_icon} style={{ ...styles.iconStyle }} />
