@@ -15,6 +15,11 @@ const SocialInvites = ({ renData }) => {
     const [refCode, setRefCode] = useState("");
 
 
+    const openGamil = () => {
+        window.open('https://mail.google.com/mail/u/0/?fs=1&to=someone@example.com&su=SUBJECT&body=BODY&bcc=someone.else@example.com&tf=cm')
+    }
+
+
     const openFbPopUp = () => {
         var fburl = '';
         var fbimgurl = 'http://';
@@ -27,6 +32,10 @@ const SocialInvites = ({ renData }) => {
             'facebook-share-dialog',
             'width=626,height=436');
         return false;
+    }
+
+    const sendMail = () => {
+        window.open('mailto:test@example.com?subject=subject&body=body');
     }
 
     return (
@@ -47,7 +56,7 @@ const SocialInvites = ({ renData }) => {
                 <div style={{ ...styles.iconsContainer }}>
                     <a href={"https://web.whatsapp.com/send?text=" + renData.message}><img src={wa_share_icon} style={{ ...styles.iconStyle }} /></a>
                     <img onClick={() => openFbPopUp()} src={fb_share_icon} style={{ ...styles.iconStyle }} />
-                    <img src={gmail_share_icon} style={{ ...styles.iconStyle }} />
+                    <img onClick={() => openGamil()} src={gmail_share_icon} style={{ ...styles.iconStyle }} />
                     <img src={message_share_icon} style={{ ...styles.iconStyle }} />
                     <img src={more_share_icon} style={{ ...styles.iconStyle }} />
                 </div>
