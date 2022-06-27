@@ -57,7 +57,7 @@ const SocialInvites = ({ renData }) => {
                     <a href={"https://web.whatsapp.com/send?text=" + renData.message}><img src={wa_share_icon} style={{ ...styles.iconStyle }} /></a>
                     <img onClick={() => openFbPopUp()} src={fb_share_icon} style={{ ...styles.iconStyle }} />
                     <img onClick={() => openGamil()} src={gmail_share_icon} style={{ ...styles.iconStyle }} />
-                    <img src={message_share_icon} style={{ ...styles.iconStyle }} />
+                    <a href="sms:?body=somemessage"><img src={message_share_icon} style={{ ...styles.iconStyle }} /></a>
                     <img src={more_share_icon} style={{ ...styles.iconStyle }} />
                 </div>
             </div>
