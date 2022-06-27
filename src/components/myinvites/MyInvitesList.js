@@ -16,7 +16,7 @@ const MyInvitesList = () => {
 
     const styles = {
         mainContainer: {
-            width: '95vw',
+            width: '95%',
             height: 'auto',
             margin: '0 auto',
 

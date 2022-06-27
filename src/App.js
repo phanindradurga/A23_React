@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import './App.css';
 import HeaderTab from './components/HeaderTab';
@@ -11,8 +11,15 @@ import MyInvites from './components/myinvites/MyInvites';
 
 function App() {
 
+
   const tabsList = ["Refer Now", "My Rewards", "My Invites"]
   const [pageID, setPageID] = useState(0)
+
+
+  // useEffect(() => {
+  //   let profilesLength = gg();
+  //   alert("Length: ", profilesLength);
+  // }, [])
 
   const onTabSelected = (selectedPage) => {
     setPageID(selectedPage)
@@ -30,6 +37,18 @@ function App() {
   const referNowClick = () => {
     setPageID(0)
   }
+
+  // const gg = () => {
+  //   if (console) {
+  //     console.profile();
+  //     console.profileEnd();
+  //     // if (console.clear) { console.clear() };
+  //     console.log(console.profiles);
+  //     return console.profiles.length > 0;
+  //   } else {
+  //     console.log("console not available");
+  //   }
+  // }
 
   return (
     <div className="App">

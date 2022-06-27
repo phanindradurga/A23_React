@@ -13,7 +13,7 @@ const RnESteps = (props) => {
     const styles = {
         mainContainer: {
             backgroundColor: '#FFFDEA',
-            width: '95vw',
+            width: '95%',
             height: 'auto',
             margin: '0 auto',
             borderStyle: 'solid',

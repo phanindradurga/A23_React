@@ -81,7 +81,7 @@ const styles = {
     maincontainerStyle: {
         display: 'flex',
         flexDirection: 'column',
-        width: '95vw',
+        width: '95%',
         height: 'fit-content',
         margin: '0 auto',
         boxSizing: 'border-box',
@@ -103,7 +103,7 @@ const styles = {
         color: '#032146'
     },
     soicalInvitesContainer: {
-        width: '95vw',
+        width: '95%',
         margin: '0 auto',
         display: 'flex',
         justifyContent: 'flex-start',

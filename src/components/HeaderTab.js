@@ -28,7 +28,7 @@ const HeaderTab = ({ tabs, onPageSelected, pageID }) => {
             marginRight: '0.1rem',
             borderStyle: 'none',
             padding: '0.5rem',
-            width: `${tabWidth}vw`,
+            width: `${tabWidth}%`,
             fontSize: '1rem',
             borderStartEndRadius: '0.2rem',
             borderStartStartRadius: '0.2rem'
@@ -38,7 +38,7 @@ const HeaderTab = ({ tabs, onPageSelected, pageID }) => {
             backgroundColor: '#E5E8EC',
             color: '#092b54',
             fontWeight: 'bold',
-            width: `${tabWidth}vw`,
+            width: `${tabWidth}%`,
             borderBottomStyle: 'none',
             marginRight: '0.1rem',
             padding: '0.5rem',
