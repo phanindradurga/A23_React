@@ -81,7 +81,7 @@ const styles = {
     maincontainerStyle: {
         display: 'flex',
         flexDirection: 'column',
-        width: '95%',
+        width: '100%',
         height: 'fit-content',
         margin: '0 auto',
         boxSizing: 'border-box',
