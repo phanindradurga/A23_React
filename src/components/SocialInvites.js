@@ -10,7 +10,7 @@ import info_icon from '../images/rne_info_icon.png'
 import copy_icon from '../images/rne_copy_icon.png'
 import { useState } from 'react'
 
-const SocialInvites = () => {
+const SocialInvites = ({ renData }) => {
 
     const [refCode, setRefCode] = useState("");
 
@@ -32,7 +32,7 @@ const SocialInvites = () => {
                     <span style={{ ...styles.spanText, marginLeft: '0.6rem' }}>Invite Friends via</span>
                 </div>
                 <div style={{ ...styles.iconsContainer }}>
-                    <img src={wa_share_icon} style={{ ...styles.iconStyle }} />
+                    <a href={"https://web.whatsapp.com/send?text=" + renData.message}><img src={wa_share_icon} style={{ ...styles.iconStyle }} /></a>
                     <img src={fb_share_icon} style={{ ...styles.iconStyle }} />
                     <img src={gmail_share_icon} style={{ ...styles.iconStyle }} />
                     <img src={message_share_icon} style={{ ...styles.iconStyle }} />

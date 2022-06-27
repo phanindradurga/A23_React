@@ -18,6 +18,8 @@ function App() {
   const tabsList = ["Refer Now", "My Rewards", "My Invites"]
   const [pageID, setPageID] = useState(0)
   const [referAndEarndata, setReferAndEarndata] = useState({})
+  const [myRewards, setMyRewards] = useState({})
+  const [myInvites, setmyInvites] = useState({})
 
 
   useEffect(() => {
@@ -36,7 +38,7 @@ function App() {
         'Authorization': A23_TOKEN,
       };
       await axios.post('https://api.qapfgames.com/a23user/my_rewards', body, { headers })
-        .then((response => console.log('----->', response.data)))
+        .then(response => setMyRewards(response))
         .catch((e) => console.log('error here', e))
     }
 
@@ -46,7 +48,7 @@ function App() {
         'Authorization': A23_TOKEN,
       };
       await axios.post('https://api.qapfgames.com/a23user/my_invites', body, { headers })
-        .then((response => console.log('----->', response.data)))
+        .then(response => setmyInvites(response))
         .catch((e) => console.log('error here', e))
     }
 
@@ -75,7 +77,7 @@ function App() {
     return (
       <div>
         <RnESteps data={referAndEarndata} />
-        <SocialInvites />
+        <SocialInvites renData={referAndEarndata} />
       </div>
     )
   }
