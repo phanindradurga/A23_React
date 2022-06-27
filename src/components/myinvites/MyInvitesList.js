@@ -47,7 +47,7 @@ const MyInvitesList = () => {
                 {records.map((records, index) => {
                     return <div style={{ display: 'flex', width: '100%', boxSizing: 'border-box', backgroundColor: (index % 2 === 0) ? '#FFFFFF' : '#F7F7F7' }}>
                         <div style={{ width: `${widthPercentage[0]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', alignSelf: 'center' }}>
-                            5
+                            <input type="checkbox" />
                         </div>
                         <div style={{ width: `${widthPercentage[1]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', fontSize: '0.6rem', alignSelf: 'center', textAlign: 'start' }}>
                             {records.emailMob}
