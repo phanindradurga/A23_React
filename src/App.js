@@ -50,7 +50,10 @@ function App() {
       //Prod : https://pfapi.a23games.in/a23user/my_invites/
       //QA : https://api.qapfgames.com/a23user/my_invites
       await axios.post('https://api.qapfgames.com/a23user/my_invites', body, { headers })
-        .then(response => setmyInvites(response))
+        .then(response => {
+          const data = "{\"Items\":[{\"identity\":\"7207666037\",\"userId\":\"0rl7xk05y5duiut\",\"updatedAt\":0,\"status\":\"pending\",\"screenName\":\"zero40\",\"createdAt\":1656180691158,\"type\":\"sms\"},{\"identity\":\"7569495111\",\"userId\":\"0rl7xk05y5duiut\",\"updatedAt\":0,\"status\":\"pending\",\"screenName\":\"zero40\",\"createdAt\":1656180691155,\"type\":\"sms\"}]}"
+          setmyInvites(data)
+        })
         .catch((e) => console.log('error here', e))
     }
 

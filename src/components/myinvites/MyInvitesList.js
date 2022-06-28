@@ -4,14 +4,17 @@ import { InviteData } from './InviteData'
 const MyInvitesList = ({ myInvitesData }) => {
 
     const headerTitles = ["Select", "Email/Mobile", "Last Invite", "Accept Date", "Status"]
-    const widthPercentage = [15, 35, 15, 20, 15]
+    const widthPercentage = [10, 30, 22, 22, 16]
 
     const data1 = new InviteData(false, "Phani2205@gmail.com", "22nd jun", "NA", "P")
     const data2 = new InviteData(false, "+919985788376", "22nd jun", "NA", "P")
     const data3 = new InviteData(false, "+919848109877", "22nd Aug", "NA", "P")
 
-    const records = myInvitesData.items ? myInvitesData : [data1, data2, data3];
 
+    const obj = JSON.parse(myInvitesData);
+    const records = obj.Items ? obj.Items : [data1, data2, data3]
+
+    console.log("records ", records);
 
 
     const styles = {
@@ -41,28 +44,53 @@ const MyInvitesList = ({ myInvitesData }) => {
         )
     }
 
+    const capitalizeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    const getFormattedDate = (timestamp) => {
+        var formattedTime = "NA"
+        try {
+            if (timestamp !== 0) {
+                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                ];
+                var date = new Date(timestamp);
+                var month = monthNames[date.getMonth()];
+                var day = date.getDay();
+                var year = date.getFullYear().toString().slice(-2);
+                formattedTime = day + ' ' + month + '\'' + year;
+            }
+        } catch (e) {
+
+        }
+        return formattedTime
+
+    }
+
     const getListItems = () => {
         return (
             <div>
                 {records.map((records, index) => {
+
                     return <div style={{ display: 'flex', width: '100%', boxSizing: 'border-box', backgroundColor: (index % 2 === 0) ? '#FFFFFF' : '#F7F7F7' }}>
                         <div style={{ width: `${widthPercentage[0]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', alignSelf: 'center' }}>
                             <input type="checkbox" />
                         </div>
-                        <div style={{ width: `${widthPercentage[1]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', fontSize: '0.6rem', alignSelf: 'center', textAlign: 'start' }}>
-                            {records.emailMob}
+                        <div style={{ width: `${widthPercentage[1]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', fontSize: '0.6rem', alignSelf: 'center' }}>
+                            {records.identity}
                         </div>
 
                         <div style={{ width: `${widthPercentage[2]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', fontSize: '0.6rem', alignSelf: 'center' }}>
-                            {records.lastInvite}
+                            {getFormattedDate(records.createdAt)}
                         </div>
 
                         <div style={{ width: `${widthPercentage[3]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', fontSize: '0.6rem', alignSelf: 'center' }}>
-                            {records.acceptDate}
+                            {getFormattedDate(records.updatedAt)}
                         </div>
 
                         <div style={{ width: `${widthPercentage[4]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', fontSize: '0.6rem', alignSelf: 'center' }}>
-                            {records.status}
+                            {capitalizeFirstLetter(records.status)}
                         </div>
 
                     </div>
