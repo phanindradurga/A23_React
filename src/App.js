@@ -26,6 +26,7 @@ function App() {
     const fetchReNData = async () => {
       const headers = {
         'Authorization': A23_TOKEN,
+        'Access-Control-Allow-Origin': '*'
       };
       await axios.get('https://api.qapfgames.com/a23user/referAndEarn', { headers })
         .then((response => receivedResponse(response.data.referNow)))
@@ -36,6 +37,7 @@ function App() {
       const body = { filter: '1' }
       const headers = {
         'Authorization': A23_TOKEN,
+        'Access-Control-Allow-Origin': '*'
       };
       await axios.post('https://api.qapfgames.com/a23user/my_rewards', body, { headers })
         .then(response => setMyRewards(response))
@@ -46,6 +48,7 @@ function App() {
       const body = { filter: '1' }
       const headers = {
         'Authorization': A23_TOKEN,
+        'Access-Control-Allow-Origin': '*'
       };
       //Prod : https://pfapi.a23games.in/a23user/my_invites/
       //QA : https://api.qapfgames.com/a23user/my_invites
