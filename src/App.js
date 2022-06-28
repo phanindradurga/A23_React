@@ -47,6 +47,8 @@ function App() {
       const headers = {
         'Authorization': A23_TOKEN,
       };
+      //Prod : https://pfapi.a23games.in/a23user/my_invites/
+      //QA : https://api.qapfgames.com/a23user/my_invites
       await axios.post('https://api.qapfgames.com/a23user/my_invites', body, { headers })
         .then(response => setmyInvites(response))
         .catch((e) => console.log('error here', e))
@@ -98,12 +100,13 @@ function App() {
   //   }
   // }
 
+
   return (
     <div className="App">
       <HeaderTab tabs={tabsList} onPageSelected={(data) => onTabSelected(data)} pageID={pageID} />
       {(pageID === 0) ? getReferNowPage() : ''}
       {(pageID === 1) ? MyRewards({ clickHandler: () => referNowClick() }) : ''}
-      {(pageID === 2) ? MyInvites({ clickHandler: () => referNowClick() }) : ''}
+      {(pageID === 2) ? MyInvites({ clickHandler: () => referNowClick(), myInvitesData: myInvites }) : ''}
 
     </div>
   );

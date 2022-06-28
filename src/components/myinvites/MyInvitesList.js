@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { InviteData } from './InviteData'
-const MyInvitesList = () => {
+const MyInvitesList = ({ myInvitesData }) => {
 
     const headerTitles = ["Select", "Email/Mobile", "Last Invite", "Accept Date", "Status"]
     const widthPercentage = [15, 35, 15, 20, 15]
@@ -10,7 +10,7 @@ const MyInvitesList = () => {
     const data2 = new InviteData(false, "+919985788376", "22nd jun", "NA", "P")
     const data3 = new InviteData(false, "+919848109877", "22nd Aug", "NA", "P")
 
-    const records = [data1, data2, data3]
+    const records = myInvitesData.items ? myInvitesData : [data1, data2, data3];
 
 
 
