@@ -2,14 +2,15 @@
 import React from 'react'
 
 import EmptyReward from './EmptyReward'
+import MyRewardsList from './MyRewardsList'
 
 const MyRewards = ({ clickHandler }) => {
 
-    const isRewardsEmpty = true
+    const isRewardsEmpty = false
 
     return (
         <div>
-            {(isRewardsEmpty === true) ? EmptyReward({ clickHandler: clickHandler }) : <div>Rewards UIII</div>}
+            {(isRewardsEmpty === true) ? EmptyReward({ clickHandler: clickHandler }) : MyRewardsList()}
         </div>
     )
 }
