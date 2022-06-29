@@ -51,14 +51,14 @@ const MyRewardsList = ({ myRewardsData, fetchMyRewards }) => {
                     <div style={{ display: 'flex', alignItems: 'center', marginRight: '2rem' }}>
                         <img src={icon} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
                         <span style={{ marginRight: '0.5rem', color: 'white' }}>Successful Invites: </span>
-                        <span style={{ color: 'white' }}>{myRewardsData.successfulInvites}</span>
+                        <span style={{ color: 'white', fontWeight: '400' }}>{myRewardsData.successfulInvites}</span>
                     </div>
 
 
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <img src={icon1} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
                         <span style={{ marginRight: '0.5rem', color: 'white' }}>Bonus: </span>
-                        <span style={{ color: 'white' }}>{myRewardsData.totalBonus}</span>
+                        <span style={{ color: 'white', fontWeight: '400' }}>{myRewardsData.totalBonus}</span>
                     </div>
                 </div>
             </div>
