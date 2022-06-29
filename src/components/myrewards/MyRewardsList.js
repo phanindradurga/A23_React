@@ -8,7 +8,7 @@ import { getFormattedDate } from '../../utils/common'
 import { A23_TOKEN } from '../../Constants'
 import axios from 'axios'
 
-const MyRewardsList = ({ myRewardsData }) => {
+const MyRewardsList = ({ myRewardsData, fetchMyRewards }) => {
 
     const [value, setValue] = useState('1');
     myRewardsData = JSON.parse(myRewardsData);
@@ -35,18 +35,6 @@ const MyRewardsList = ({ myRewardsData }) => {
             backgroundImage: `url(${bg})`
 
         },
-    }
-
-    const fetchMyRewards = async (filter) => {
-        const body = { filter: filter }
-        const headers = {
-            'Authorization': A23_TOKEN,
-        };
-        await axios.post('https://api.qapfgames.com/a23user/my_rewards', body, { headers })
-            .then(response => {
-                const data = "{\"successfulInvites\":0,\"totalBonus\":100,\"bonusList\":[{\"_id\":\"19abb8f6-045d-4db1-95f5-324ee514d7e3\",\"amount\":100,\"createdAt\":1656416069004,\"updatedAt\":1656416069004,\"description\":\"Bonus Received\",\"type\":\"REFCONBRONZE\",\"userID\":\"b659cgjrz0rukd8\"}]}"
-            })
-            .catch((e) => console.log('error here', e))
     }
 
     const handleChange = (event) => {

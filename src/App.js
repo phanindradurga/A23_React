@@ -22,63 +22,61 @@ function App() {
   const [myInvites, setmyInvites] = useState({})
   const [userprofile, setUserProfile] = useState({})
 
+  const fetchProfile = async () => {
+    const headers = {
+      'Authorization': A23_TOKEN,
+    };
+    await axios.get('https://api.qapfgames.com/a23user/get_profile/', { headers })
+      .then((response => {
+        console.log('Profile data ', response);
+        setUserProfile(response.data)
+      }))
+      .catch((e) => console.log('error here', e))
+  }
+
+  const fetchReNData = async () => {
+    const headers = {
+      'Authorization': A23_TOKEN,
+    };
+    await axios.get('https://api.qapfgames.com/a23user/referAndEarn', { headers })
+      .then((response => receivedResponse(response.data.referNow)))
+      .catch((e) => console.log('error here', e))
+  }
+
+  const fetchMyRewards = async (filter = '1') => {
+    const body = { filter }
+    const headers = {
+      'Authorization': A23_TOKEN,
+    };
+    await axios.post('https://api.qapfgames.com/a23user/my_rewards', body, { headers })
+      .then(response => {
+
+        const data = "{\"successfulInvites\":0,\"totalBonus\":100,\"bonusList\":[{\"_id\":\"19abb8f6-045d-4db1-95f5-324ee514d7e3\",\"amount\":100,\"createdAt\":1656416069004,\"updatedAt\":1656416069004,\"description\":\"Bonus Received\",\"type\":\"REFCONBRONZE\",\"userID\":\"b659cgjrz0rukd8\"}]}"
+        setMyRewards(data)
+      })
+      .catch((e) => console.log('error here', e))
+  }
+
+  const fetchMyIvites = async (filter = '1') => {
+    const body = { filter }
+    const headers = {
+      'Authorization': A23_TOKEN,
+    };
+    //Prod : https://pfapi.a23games.in/a23user/my_invites/
+    //QA : https://api.qapfgames.com/a23user/my_invites
+    await axios.post('https://api.qapfgames.com/a23user/my_invites', body, { headers })
+      .then(response => {
+        const data = "{\"Items\":[{\"identity\":\"7207666037\",\"userId\":\"0rl7xk05y5duiut\",\"updatedAt\":0,\"status\":\"pending\",\"screenName\":\"zero40\",\"createdAt\":1656180691158,\"type\":\"sms\"},{\"identity\":\"7569495111\",\"userId\":\"0rl7xk05y5duiut\",\"updatedAt\":0,\"status\":\"pending\",\"screenName\":\"zero40\",\"createdAt\":1656180691155,\"type\":\"sms\"}]}"
+        setmyInvites(data)
+      })
+      .catch((e) => console.log('error here', e))
+  }
 
   useEffect(() => {
-
-    const fetchProfile = async () => {
-      const headers = {
-        'Authorization': A23_TOKEN,
-      };
-      await axios.get('https://api.qapfgames.com/a23user/get_profile/', { headers })
-        .then((response => {
-          console.log('Profile data ', response);
-          setUserProfile(response.data)
-        }))
-        .catch((e) => console.log('error here', e))
-    }
-
-    const fetchReNData = async () => {
-      const headers = {
-        'Authorization': A23_TOKEN,
-      };
-      await axios.get('https://api.qapfgames.com/a23user/referAndEarn', { headers })
-        .then((response => receivedResponse(response.data.referNow)))
-        .catch((e) => console.log('error here', e))
-    }
-
-    const fetchMyRewards = async () => {
-      const body = { filter: '1' }
-      const headers = {
-        'Authorization': A23_TOKEN,
-      };
-      await axios.post('https://api.qapfgames.com/a23user/my_rewards', body, { headers })
-        .then(response => {
-
-          const data = "{\"successfulInvites\":0,\"totalBonus\":100,\"bonusList\":[{\"_id\":\"19abb8f6-045d-4db1-95f5-324ee514d7e3\",\"amount\":100,\"createdAt\":1656416069004,\"updatedAt\":1656416069004,\"description\":\"Bonus Received\",\"type\":\"REFCONBRONZE\",\"userID\":\"b659cgjrz0rukd8\"}]}"
-          setMyRewards(data)
-        })
-        .catch((e) => console.log('error here', e))
-    }
-
-    const fetchMyIvites = async () => {
-      const body = { filter: '1' }
-      const headers = {
-        'Authorization': A23_TOKEN,
-      };
-      //Prod : https://pfapi.a23games.in/a23user/my_invites/
-      //QA : https://api.qapfgames.com/a23user/my_invites
-      await axios.post('https://api.qapfgames.com/a23user/my_invites', body, { headers })
-        .then(response => {
-          const data = "{\"Items\":[{\"identity\":\"7207666037\",\"userId\":\"0rl7xk05y5duiut\",\"updatedAt\":0,\"status\":\"pending\",\"screenName\":\"zero40\",\"createdAt\":1656180691158,\"type\":\"sms\"},{\"identity\":\"7569495111\",\"userId\":\"0rl7xk05y5duiut\",\"updatedAt\":0,\"status\":\"pending\",\"screenName\":\"zero40\",\"createdAt\":1656180691155,\"type\":\"sms\"}]}"
-          setmyInvites(data)
-        })
-        .catch((e) => console.log('error here', e))
-    }
     fetchProfile()
     fetchReNData()
     fetchMyRewards()
     fetchMyIvites()
-
   }, [])
 
   const receivedResponse = (data) => {
@@ -126,8 +124,8 @@ function App() {
     <div className="App">
       <HeaderTab tabs={tabsList} onPageSelected={(data) => onTabSelected(data)} pageID={pageID} />
       {(pageID === 0) ? getReferNowPage() : ''}
-      {(pageID === 1) ? MyRewards({ clickHandler: () => referNowClick(), myRewardsData: myRewards }) : ''}
-      {(pageID === 2) ? MyInvites({ clickHandler: () => referNowClick(), myInvitesData: myInvites }) : ''}
+      {(pageID === 1) ? <MyRewards clickHandler={() => referNowClick()} myRewardsData={myRewards} fetchMyRewards={(selection) => fetchMyRewards(selection)} /> : ''}
+      {(pageID === 2) ? <MyInvites clickHandler={() => referNowClick()} myInvitesData={myInvites} fetchMyIvites={(selection) => fetchMyIvites(selection)} /> : ''}
 
     </div>
   );
