@@ -10,7 +10,7 @@ const MyInvites = ({ clickHandler, myInvitesData }) => {
 
     return (
         <div>
-            {(isRewardsEmpty === true) ? EmptyReward({ clickHandler: clickHandler }) : MyInvitesList({ myInvitesData: myInvitesData })}
+            {(isRewardsEmpty === true) ? <EmptyReward clickHandler={clickHandler} /> : <MyInvitesList myInvitesData={myInvitesData} />}
         </div>
     )
 }

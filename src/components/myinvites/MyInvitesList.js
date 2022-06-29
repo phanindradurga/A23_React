@@ -1,8 +1,13 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState } from 'react'
+import { A23_TOKEN } from '../../Constants'
 import { getFormattedDate } from '../../utils/common'
 
 import { InviteData } from './InviteData'
 const MyInvitesList = ({ myInvitesData }) => {
+
+
+    const [value, setValue] = useState('1')
 
     const headerTitles = ["Select", "Email/Mobile", "Last Invite", "Accept Date", "Status"]
     const widthPercentage = [10, 30, 22, 22, 16]
@@ -12,6 +17,12 @@ const MyInvitesList = ({ myInvitesData }) => {
     const data3 = new InviteData(false, "+919848109877", "22nd Aug", "NA", "P")
 
 
+
+    const options = [
+        { label: 'Last Week', value: '1' },
+        { label: 'Last Month', value: '2' },
+        { label: 'Last 3 Months', value: '3' },
+    ];
     const obj = JSON.parse(myInvitesData);
     const records = obj.Items ? obj.Items : [data1, data2, data3]
 
@@ -49,7 +60,25 @@ const MyInvitesList = ({ myInvitesData }) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
+    const handleChange = (event) => {
+        const filter = event.target.value
+        fetchMyIvites(filter)
+        setValue(filter)
+    }
 
+    const fetchMyIvites = async (filter) => {
+        const body = { filter: filter }
+        const headers = {
+            'Authorization': A23_TOKEN,
+        };
+        //Prod : https://pfapi.a23games.in/a23user/my_invites/
+        //QA : https://api.qapfgames.com/a23user/my_invites
+        await axios.post('https://api.qapfgames.com/a23user/my_invites', body, { headers })
+            .then(response => {
+                const data = "{\"Items\":[{\"identity\":\"7207666037\",\"userId\":\"0rl7xk05y5duiut\",\"updatedAt\":0,\"status\":\"pending\",\"screenName\":\"zero40\",\"createdAt\":1656180691158,\"type\":\"sms\"},{\"identity\":\"7569495111\",\"userId\":\"0rl7xk05y5duiut\",\"updatedAt\":0,\"status\":\"pending\",\"screenName\":\"zero40\",\"createdAt\":1656180691155,\"type\":\"sms\"}]}"
+            })
+            .catch((e) => console.log('error here', e))
+    }
 
     const getListItems = () => {
         return (
@@ -86,6 +115,13 @@ const MyInvitesList = ({ myInvitesData }) => {
     return (
         <div style={{ ...styles.mainContainer }}>
             {getListHeader()}
+            <div style={{ display: 'flex', margin: '1rem', justifyContent: 'flex-end' }}>
+                <select value={value} onChange={handleChange}>
+                    {options.map((option) => (
+                        <option value={option.value}>{option.label}</option>
+                    ))}
+                </select>
+            </div>
             {getListItems()}
         </div>
     )
