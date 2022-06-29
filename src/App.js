@@ -39,8 +39,9 @@ function App() {
       };
       await axios.post('https://api.qapfgames.com/a23user/my_rewards', body, { headers })
         .then(response => {
+
           const data = "{\"successfulInvites\":0,\"totalBonus\":100,\"bonusList\":[{\"_id\":\"19abb8f6-045d-4db1-95f5-324ee514d7e3\",\"amount\":100,\"createdAt\":1656416069004,\"updatedAt\":1656416069004,\"description\":\"Bonus Received\",\"type\":\"REFCONBRONZE\",\"userID\":\"b659cgjrz0rukd8\"}]}"
-          setMyRewards(response)
+          setMyRewards(data)
         })
         .catch((e) => console.log('error here', e))
     }
@@ -111,7 +112,7 @@ function App() {
     <div className="App">
       <HeaderTab tabs={tabsList} onPageSelected={(data) => onTabSelected(data)} pageID={pageID} />
       {(pageID === 0) ? getReferNowPage() : ''}
-      {(pageID === 1) ? MyRewards({ clickHandler: () => referNowClick() }) : ''}
+      {(pageID === 1) ? MyRewards({ clickHandler: () => referNowClick(), myRewardsData: myRewards }) : ''}
       {(pageID === 2) ? MyInvites({ clickHandler: () => referNowClick(), myInvitesData: myInvites }) : ''}
 
     </div>

@@ -4,7 +4,12 @@ import plusIcon from '../../images/pf_rne_myrewards_plusicon.png'
 
 import bg from '../../images/my_rewards_bg.png'
 
-const MyRewardsList = () => {
+const MyRewardsList = ({ myRewardsData }) => {
+
+
+    myRewardsData = JSON.parse(myRewardsData);
+    console.log('MyRewardsData : ', myRewardsData);
+    console.log('MyRewardsData1 : ', myRewardsData.successfulInvites);
 
     var unicode = '\u20b9';
 
@@ -30,47 +35,30 @@ const MyRewardsList = () => {
                     <div style={{ display: 'flex', alignItems: 'center', marginRight: '2rem' }}>
                         <img src={icon} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
                         <span style={{ marginRight: '0.5rem', color: 'white' }}>Successful Invites: </span>
-                        <span style={{ color: 'white' }}>0</span>
+                        <span style={{ color: 'white' }}>{myRewardsData.successfulInvites}</span>
                     </div>
 
 
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <img src={icon1} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
                         <span style={{ marginRight: '0.5rem', color: 'white' }}>Bonus: </span>
-                        <span style={{ color: 'white' }}>0</span>
+                        <span style={{ color: 'white' }}>{myRewardsData.totalBonus}</span>
                     </div>
                 </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginTop: '3rem' }}>
-                <img src={plusIcon} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
-                <span> {unicode + "20"}</span>
-                <span> Bonus Received</span>
-                <span> 28 Jun'22</span>
 
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', margin: '0.8rem 0rem' }}>
-                <img src={plusIcon} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
-                <span> {unicode + "20"}</span>
-                <span> Bonus Received</span>
-                <span> 28 Jun'22</span>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', margin: '0.8rem 0rem' }}>
-                <img src={plusIcon} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
-                <span> {unicode + "20"}</span>
-                <span> Bonus Received</span>
-                <span> 28 Jun'22</span>
-            </div>
+            {myRewardsData.bonusList.map((record, index) => {
+                return <div key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginTop: '3rem' }}>
+                    <img src={plusIcon} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
+                    <span> {unicode + "20"}</span>
+                    <span> Bonus Received</span>
+                    <span> 28 Jun'22</span>
+                </div>
+            })}
 
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', margin: '0.8rem 0rem' }}>
-                <img src={plusIcon} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
-                <span> {unicode + "20"}</span>
-                <span> Bonus Received</span>
-                <span> 28 Jun'22</span>
-            </div>
+
         </div>
     )
 

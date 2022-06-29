@@ -38,7 +38,7 @@ const MyInvitesList = ({ myInvitesData }) => {
         return (
             <div style={{ ...styles.listheader, marginTop: '1rem', backgroundColor: '#ebbe69', boxSizing: 'border-box', borderColor: '#C9C9C9', borderRadius: '0.2rem', borderStyle: 'solid' }}>
                 {headerTitles.map((title, index) => {
-                    return <span style={{ width: `${widthPercentage[index]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', fontSize: '0.6rem' }}>{title}</span>
+                    return <span key={index} style={{ width: `${widthPercentage[index]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', fontSize: '0.6rem' }}>{title}</span>
                 })}
             </div>
         )
@@ -73,7 +73,7 @@ const MyInvitesList = ({ myInvitesData }) => {
             <div>
                 {records.map((records, index) => {
 
-                    return <div style={{ display: 'flex', width: '100%', boxSizing: 'border-box', backgroundColor: (index % 2 === 0) ? '#FFFFFF' : '#F7F7F7' }}>
+                    return <div key={index} style={{ display: 'flex', width: '100%', boxSizing: 'border-box', backgroundColor: (index % 2 === 0) ? '#FFFFFF' : '#F7F7F7' }}>
                         <div style={{ width: `${widthPercentage[0]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', alignSelf: 'center' }}>
                             <input type="checkbox" />
                         </div>
