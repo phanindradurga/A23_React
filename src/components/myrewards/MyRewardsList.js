@@ -3,6 +3,7 @@ import icon1 from '../../images/pf_rne_bonus_img.png'
 import plusIcon from '../../images/pf_rne_myrewards_plusicon.png'
 
 import bg from '../../images/my_rewards_bg.png'
+import { getFormattedDate } from '../../utils/common'
 
 const MyRewardsList = ({ myRewardsData }) => {
 
@@ -27,6 +28,9 @@ const MyRewardsList = ({ myRewardsData }) => {
         },
     }
 
+
+
+
     return (
         <div>
             <div style={{ ...styles.mainContainer, backgroundSize: '100% 100%' }}>
@@ -50,10 +54,12 @@ const MyRewardsList = ({ myRewardsData }) => {
 
             {myRewardsData.bonusList.map((record, index) => {
                 return <div key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginTop: '3rem' }}>
-                    <img src={plusIcon} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
-                    <span> {unicode + "20"}</span>
-                    <span> Bonus Received</span>
-                    <span> 28 Jun'22</span>
+                    <div style={{ display: 'flex', alignItems: 'center' }} >
+                        <img src={plusIcon} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
+                        <span> {unicode + record.amount}</span>
+                    </div>
+                    <span style={{ alignItems: 'left' }}> {record.description}</span>
+                    <span> {getFormattedDate(record.createdAt)}</span>
                 </div>
             })}
 
