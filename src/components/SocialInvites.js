@@ -10,11 +10,11 @@ import info_icon from '../images/rne_info_icon.png'
 import copy_icon from '../images/rne_copy_icon.png'
 import { useState } from 'react'
 
-const SocialInvites = ({ renData }) => {
+const SocialInvites = ({ renData, userProfile }) => {
 
     const [refCode, setRefCode] = useState("");
 
-
+    console.log('userprofile', userProfile);
     const openGamil = () => {
         window.open('https://mail.google.com/mail/u/0/?fs=1&to=someone@example.com&su=SUBJECT&body=BODY&bcc=someone.else@example.com&tf=cm')
     }
@@ -69,7 +69,7 @@ const SocialInvites = ({ renData }) => {
                 </div>
                 <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center' }}>
                     <div style={{ ...styles.shareCode }}>
-                        <span>46YALY</span>
+                        <span>{userProfile.code ? userProfile.code : ''}</span>
                         <img src={copy_icon} style={{ height: '20px', width: '20px', marginLeft: '0.5rem' }} />
                     </div>
                 </div>

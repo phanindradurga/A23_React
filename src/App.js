@@ -20,9 +20,23 @@ function App() {
   const [referAndEarndata, setReferAndEarndata] = useState({})
   const [myRewards, setMyRewards] = useState({})
   const [myInvites, setmyInvites] = useState({})
+  const [userprofile, setUserProfile] = useState({})
 
 
   useEffect(() => {
+
+    const fetchProfile = async () => {
+      const headers = {
+        'Authorization': A23_TOKEN,
+      };
+      await axios.get('https://api.qapfgames.com/a23user/get_profile/', { headers })
+        .then((response => {
+          console.log('Profile data ', response);
+          setUserProfile(response.data)
+        }))
+        .catch((e) => console.log('error here', e))
+    }
+
     const fetchReNData = async () => {
       const headers = {
         'Authorization': A23_TOKEN,
@@ -60,7 +74,7 @@ function App() {
         })
         .catch((e) => console.log('error here', e))
     }
-
+    fetchProfile()
     fetchReNData()
     fetchMyRewards()
     fetchMyIvites()
@@ -86,7 +100,7 @@ function App() {
     return (
       <div>
         <RnESteps data={referAndEarndata} />
-        <SocialInvites renData={referAndEarndata} />
+        <SocialInvites renData={referAndEarndata} userProfile={userprofile} />
       </div>
     )
   }
