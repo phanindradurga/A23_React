@@ -1,18 +1,27 @@
 import icon from '../../images/pf_rne_success_invites_img.png'
 import icon1 from '../../images/pf_rne_bonus_img.png'
 import plusIcon from '../../images/pf_rne_myrewards_plusicon.png'
+import { useState } from 'react'
 
 import bg from '../../images/my_rewards_bg.png'
 import { getFormattedDate } from '../../utils/common'
+import { A23_TOKEN } from '../../Constants'
+import axios from 'axios'
 
 const MyRewardsList = ({ myRewardsData }) => {
 
-
+    const [value, setValue] = useState('1');
     myRewardsData = JSON.parse(myRewardsData);
     console.log('MyRewardsData : ', myRewardsData);
     console.log('MyRewardsData1 : ', myRewardsData.successfulInvites);
 
     var unicode = '\u20b9';
+
+    const options = [
+        { label: 'Last Week', value: '1' },
+        { label: 'Last Month', value: '2' },
+        { label: 'Last 3 Months', value: '3' },
+    ];
 
     const styles = {
         mainContainer: {
@@ -28,8 +37,23 @@ const MyRewardsList = ({ myRewardsData }) => {
         },
     }
 
+    const fetchMyRewards = async (filter) => {
+        const body = { filter: filter }
+        const headers = {
+            'Authorization': A23_TOKEN,
+        };
+        await axios.post('https://api.qapfgames.com/a23user/my_rewards', body, { headers })
+            .then(response => {
+                const data = "{\"successfulInvites\":0,\"totalBonus\":100,\"bonusList\":[{\"_id\":\"19abb8f6-045d-4db1-95f5-324ee514d7e3\",\"amount\":100,\"createdAt\":1656416069004,\"updatedAt\":1656416069004,\"description\":\"Bonus Received\",\"type\":\"REFCONBRONZE\",\"userID\":\"b659cgjrz0rukd8\"}]}"
+            })
+            .catch((e) => console.log('error here', e))
+    }
 
-
+    const handleChange = (event) => {
+        const filter = event.target.value
+        fetchMyRewards(filter)
+        setValue(filter)
+    }
 
     return (
         <div>
@@ -52,8 +76,17 @@ const MyRewardsList = ({ myRewardsData }) => {
             </div>
 
 
+            <div style={{ display: 'flex', margin: '1rem', justifyContent: 'flex-end' }}>
+                <select value={value} onChange={handleChange}>
+                    {options.map((option) => (
+                        <option value={option.value}>{option.label}</option>
+                    ))}
+                </select>
+            </div>
+
+
             {myRewardsData.bonusList.map((record, index) => {
-                return <div key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginTop: '3rem' }}>
+                return <div key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginTop: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center' }} >
                         <img src={plusIcon} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
                         <span> {unicode + record.amount}</span>
