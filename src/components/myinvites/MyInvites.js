@@ -53,10 +53,12 @@ const MyInvites = ({ clickHandler, myInvitesData, fetchMyIvites }) => {
 
     return (
         <div>
-            {(isRewardsEmpty === true) ? <EmptyReward clickHandler={clickHandler} /> : <MyInvitesList ref={childRef} myInvitesData={myInvitesData} fetchMyIvites={(selection) => fetchMyIvites(selection)} onItemsSelction={onItemsSelction} />}
-            <div style={{ ...styles.btnContainer }}>
-                <div style={{ ...(btndisabled === true ? styles.btnDisabled : styles.btn) }} onClick={() => handleInviteAgain()} >Invite again</div>
-            </div>
+            {(myInvitesData && myInvitesData.Items.length > 0) ? <div><MyInvitesList ref={childRef} myInvitesData={myInvitesData} fetchMyIvites={(selection) => fetchMyIvites(selection)} onItemsSelction={onItemsSelction} />
+                <div style={{ ...styles.btnContainer }}>
+                    <div style={{ ...(btndisabled === true ? styles.btnDisabled : styles.btn) }} onClick={() => handleInviteAgain()} >Invite again</div>
+                </div>
+            </div> : <EmptyReward clickHandler={clickHandler} />}
+
         </div >
     )
 }
