@@ -71,7 +71,7 @@ const MyRewardsList = ({ myRewardsData, fetchMyRewards }) => {
 
 
             {myRewardsData.bonusList.map((record, index) => {
-                return <div key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginTop: '1rem' }}>
+                return <div key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '1rem', margin: '0rem 1.2rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center' }} >
                         <img src={plusIcon} height={'25px'} width={'25px'} style={{ marginRight: '0.8rem' }} />
                         <span style={{ color: 'green' }}> {unicode + record.amount}</span>
