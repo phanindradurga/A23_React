@@ -75,11 +75,11 @@ const RnESteps = ({ data }) => {
                 </div>
 
                 <div style={{ ...styles.stepImage }}>
-                    <img src={arrow} style={{ width: '30px', height: '32px', marginBottom: '5px' }} />
+                    <img src={arrow} style={{ width: '27px', height: '32px', marginBottom: '5px' }} />
                 </div>
 
                 <div style={{ ...styles.stepContent }}>
-                    <img src={referNEarn2} style={{ width: '30px', height: '32px', marginBottom: '5px' }} />
+                    <img src={referNEarn2} style={{ width: '33px', height: '32px', marginBottom: '5px' }} />
                     <span style={{ ...styles.stepText1 }}>Friend Purchases</span>
                     <span style={{ ...styles.stepText2 }}>You get upto</span>
                     <span style={{ ...styles.stepText3 }}>{data.friendPurchases ? `\u20B9${data.friendPurchases}` : ''}</span>
