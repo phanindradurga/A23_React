@@ -51,7 +51,8 @@ function App() {
       .then(response => {
 
         const data = "{\"successfulInvites\":0,\"totalBonus\":100,\"bonusList\":[{\"_id\":\"19abb8f6-045d-4db1-95f5-324ee514d7e3\",\"amount\":100,\"createdAt\":1656416069004,\"updatedAt\":1656416069004,\"description\":\"Bonus Received\",\"type\":\"REFCONBRONZE\",\"userID\":\"b659cgjrz0rukd8\"}]}"
-        setMyRewards(data)
+        // setMyRewards(JSON.parse(data))
+        setMyRewards(response.data)
       })
       .catch((e) => console.log('error here', e))
   }

@@ -11,7 +11,6 @@ import axios from 'axios'
 const MyRewardsList = ({ myRewardsData, fetchMyRewards }) => {
 
     const [value, setValue] = useState('1');
-    myRewardsData = JSON.parse(myRewardsData);
 
     var unicode = '\u20b9';
 
