@@ -35,9 +35,11 @@ const RnESteps = ({ data }) => {
             display: 'flex',
             flexDirection: 'column',
             width: '5%',
-            height: 'auto',
+            height: '100%',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            alignSelf: 'baseline',
+            marginTop: '0.2rem'
         },
 
         stepContentContainer: {
