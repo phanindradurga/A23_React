@@ -90,7 +90,7 @@ const RnESteps = ({ data }) => {
                 </div>
 
                 <div style={{ ...styles.stepContent }}>
-                    <img src={referNEarn3} style={{ width: '45px', height: '32px', marginBottom: '5px' }} />
+                    <img src={referNEarn3} style={{ width: '50px', height: '32px', marginBottom: '5px' }} />
                     <span style={{ ...styles.stepText1 }}>Friend Plays</span>
                     <span style={{ ...styles.stepText2 }}>You get upto</span>
                     <span style={{ ...styles.stepText3 }}>{data.friendPlays ? `\u20B9${data.friendPlays}` : ''}</span>
