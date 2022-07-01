@@ -7,11 +7,12 @@ import MyRewardsList from './MyRewardsList'
 const MyRewards = ({ clickHandler, myRewardsData, fetchMyRewards }) => {
 
 
+    console.log('myRewardsData ', myRewardsData);
     return (
         <div>
             {/* {(myRewardsData.successfulInvites) ? EmptyReward({ clickHandler: clickHandler }) : MyRewardsList({ myRewardsData: myRewardsData })} */}
-            {myRewardsData.successfulInvites ?
-                <EmptyReward clickHandler={clickHandler} /> : <MyRewardsList myRewardsData={myRewardsData} fetchMyRewards={(selection) => fetchMyRewards(selection)} />}
+            {myRewardsData.successfulInvites >= 0 ?
+                <MyRewardsList myRewardsData={myRewardsData} fetchMyRewards={(selection) => fetchMyRewards(selection)} /> : <EmptyReward clickHandler={clickHandler} />}
         </div>
     )
 }
