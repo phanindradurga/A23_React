@@ -49,14 +49,14 @@ const MyRewardsList = ({ myRewardsData, fetchMyRewards }) => {
                     <div style={{ display: 'flex', alignItems: 'center', marginRight: '2rem' }}>
                         <img src={icon} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
                         <span style={{ marginRight: '0.5rem', color: 'white' }}>Successful Invites: </span>
-                        <span style={{ color: 'white', fontWeight: '400' }}>{myRewardsData.successfulInvites}</span>
+                        <span style={{ color: 'white', fontWeight: '800' }}>{myRewardsData.successfulInvites}</span>
                     </div>
 
 
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <img src={icon1} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
                         <span style={{ marginRight: '0.5rem', color: 'white' }}>Bonus: </span>
-                        <span style={{ color: 'white', fontWeight: '400' }}>{myRewardsData.totalBonus}</span>
+                        <span style={{ color: 'white', fontWeight: '800' }}>{unicode + ' ' + myRewardsData.totalBonus}</span>
                     </div>
                 </div>
             </div>
@@ -74,11 +74,12 @@ const MyRewardsList = ({ myRewardsData, fetchMyRewards }) => {
             {myRewardsData.bonusList.map((record, index) => {
                 return <div key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginTop: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center' }} >
-                        <img src={plusIcon} height={'25px'} width={'25px'} style={{ marginRight: '0.5rem' }} />
-                        <span> {unicode + record.amount}</span>
+                        <img src={plusIcon} height={'25px'} width={'25px'} style={{ marginRight: '0.8rem' }} />
+                        <span style={{ color: 'green' }}> {unicode + record.amount}</span>
+                        <span style={{ alignItems: 'left', marginLeft: '0.8rem' }}> {record.description}</span>
                     </div>
-                    <span style={{ alignItems: 'left' }}> {record.description}</span>
-                    <span> {getFormattedDate(record.createdAt)}</span>
+
+                    <span style={{ color: 'gray' }}> {getFormattedDate(record.createdAt)}</span>
                 </div>
             })}
 
