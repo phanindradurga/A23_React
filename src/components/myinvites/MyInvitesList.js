@@ -1,11 +1,12 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { A23_TOKEN } from '../../Constants'
 import { getFormattedDate } from '../../utils/common'
 
 import { InviteData } from './InviteData'
-const MyInvitesList = ({ myInvitesData, fetchMyIvites, onItemsSelction }) => {
+const MyInvitesList = forwardRef((props, ref) => {
 
+    const { myInvitesData, fetchMyIvites, onItemsSelction, revertAllSections } = props
 
     const [value, setValue] = useState('1')
 
@@ -27,6 +28,27 @@ const MyInvitesList = ({ myInvitesData, fetchMyIvites, onItemsSelction }) => {
     const obj = myInvitesData
     var records = obj.Items ? obj.Items : [data1, data2, data3]
     const [recordsData, setRecordsData] = useState(records)
+
+    console.log('my data is ', recordsData);
+
+    useImperativeHandle(ref, () => ({
+
+        resetSelections: () => {
+            recordsData.map((records) => {
+                records.setSelection = false
+            })
+            updateRecords()
+        }
+
+    }));
+
+
+    const updateRecords = () => {
+        const newRecords = [...recordsData]
+        setRecordsData(newRecords)
+        onItemsSelction(newRecords)
+
+    }
 
     const styles = {
         mainContainer: {
@@ -67,9 +89,7 @@ const MyInvitesList = ({ myInvitesData, fetchMyIvites, onItemsSelction }) => {
 
     const onItemClick = (index) => {
         records[index].setSelection = !records[index].setSelection
-        const newRecords = [...records]
-        setRecordsData(newRecords)
-        onItemsSelction(newRecords)
+        updateRecords()
     }
 
 
@@ -117,6 +137,6 @@ const MyInvitesList = ({ myInvitesData, fetchMyIvites, onItemsSelction }) => {
             {getListItems()}
         </div>
     )
-}
+})
 
 export default MyInvitesList

@@ -1,28 +1,60 @@
-import React, { useState } from 'react'
+import axios from 'axios'
+import React, { useRef, useState } from 'react'
+import { A23_TOKEN } from '../../Constants'
 
 
 import EmptyReward from '../myrewards/EmptyReward'
 import MyInvitesList from './MyInvitesList'
 
+var selectedArray = {}
+
 const MyInvites = ({ clickHandler, myInvitesData, fetchMyIvites }) => {
 
     const [btndisabled, setBtnDisabled] = useState(true)
     const isRewardsEmpty = false
+    console.log('handleInviteAgain2 ', selectedArray);
+
+    const childRef = useRef()
 
     const onItemsSelction = (recordList) => {
         var selectedRecordsArray = recordList.filter(checkSelected)
+        selectedArray = [...selectedRecordsArray]
         setBtnDisabled(!(selectedRecordsArray && selectedRecordsArray.length > 0))
     }
 
-    function checkSelected(record) {
+    const checkSelected = (record) => {
         return record.setSelection;
+    }
+
+    const handleInviteAgain = () => {
+        if (selectedArray && selectedArray.length > 0) {
+            sendInviteAgainRequestToServer(selectedArray)
+        }
+    }
+
+    const sendInviteAgainRequestToServer = async (selectedRecordsArray) => {
+        const list = selectedRecordsArray.map((record) => record.identity)
+        const body = { list: list, type: 'both' }
+        const headers = {
+            'Authorization': A23_TOKEN,
+            'Content-Type': 'application/json'
+        };
+        await axios.post('https://api.qapfgames.com/a23user/send_invite/', body, { headers }).then(response => {
+            console.log("reponse invite ", response.data);
+            if (response.data.statusCode === 1181) {
+                console.log('get alert', childRef);
+                childRef.current.resetSelections()
+            }
+        }).catch((e) => {
+
+        })
     }
 
     return (
         <div>
-            {(isRewardsEmpty === true) ? <EmptyReward clickHandler={clickHandler} /> : <MyInvitesList myInvitesData={myInvitesData} fetchMyIvites={(selection) => fetchMyIvites(selection)} onItemsSelction={onItemsSelction} />}
+            {(isRewardsEmpty === true) ? <EmptyReward clickHandler={clickHandler} /> : <MyInvitesList ref={childRef} myInvitesData={myInvitesData} fetchMyIvites={(selection) => fetchMyIvites(selection)} onItemsSelction={onItemsSelction} />}
             <div style={{ ...styles.btnContainer }}>
-                <div style={{ ...(btndisabled === true ? styles.btnDisabled : styles.btn) }} >Invite again</div>
+                <div style={{ ...(btndisabled === true ? styles.btnDisabled : styles.btn) }} onClick={() => handleInviteAgain()} >Invite again</div>
             </div>
         </div >
     )
