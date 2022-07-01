@@ -14,7 +14,6 @@ const SocialInvites = ({ renData, userProfile }) => {
 
     const [refCode, setRefCode] = useState("");
 
-    console.log('userprofile', userProfile);
     const openGamil = () => {
         window.open('https://mail.google.com/mail/u/0/?fs=1&to=someone@example.com&su=SUBJECT&body=BODY&bcc=someone.else@example.com&tf=cm')
     }

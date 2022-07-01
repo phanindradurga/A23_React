@@ -4,7 +4,7 @@ import { A23_TOKEN } from '../../Constants'
 import { getFormattedDate } from '../../utils/common'
 
 import { InviteData } from './InviteData'
-const MyInvitesList = ({ myInvitesData, fetchMyIvites }) => {
+const MyInvitesList = ({ myInvitesData, fetchMyIvites, onItemsSelction }) => {
 
 
     const [value, setValue] = useState('1')
@@ -18,16 +18,15 @@ const MyInvitesList = ({ myInvitesData, fetchMyIvites }) => {
 
 
 
+
     const options = [
         { label: 'Last Week', value: '1' },
         { label: 'Last Month', value: '2' },
         { label: 'Last 3 Months', value: '3' },
     ];
     const obj = myInvitesData
-    const records = obj.Items ? obj.Items : [data1, data2, data3]
-
-    console.log("records ", myInvitesData);
-
+    var records = obj.Items ? obj.Items : [data1, data2, data3]
+    const [recordsData, setRecordsData] = useState(records)
 
     const styles = {
         mainContainer: {
@@ -66,16 +65,21 @@ const MyInvitesList = ({ myInvitesData, fetchMyIvites }) => {
         setValue(filter)
     }
 
+    const onItemClick = (index) => {
+        records[index].setSelection = !records[index].setSelection
+        const newRecords = [...records]
+        setRecordsData(newRecords)
+        onItemsSelction(newRecords)
+    }
 
 
     const getListItems = () => {
         return (
             <div>
-                {records.map((records, index) => {
-
-                    return <div key={index} style={{ display: 'flex', width: '100%', boxSizing: 'border-box', backgroundColor: (index % 2 === 0) ? '#FFFFFF' : '#F7F7F7' }}>
+                {recordsData.map((records, index) => {
+                    return <div key={index} style={{ display: 'flex', width: '100%', boxSizing: 'border-box', backgroundColor: (index % 2 === 0) ? '#FFFFFF' : '#F7F7F7' }} onClick={() => onItemClick(index)}>
                         <div style={{ width: `${widthPercentage[0]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', alignSelf: 'center' }}>
-                            <input type="checkbox" />
+                            <input type="checkbox" checked={records.setSelection ? records.setSelection : false} onChange={() => { }} />
                         </div>
                         <div style={{ width: `${widthPercentage[1]}%`, paddingTop: '0.5rem', paddingBottom: '0.5rem', fontSize: '0.6rem', alignSelf: 'center' }}>
                             {records.identity}
@@ -105,7 +109,7 @@ const MyInvitesList = ({ myInvitesData, fetchMyIvites }) => {
             <div style={{ display: 'flex', margin: '1rem', justifyContent: 'flex-end' }}>
                 <select value={value} onChange={handleChange}>
                     {options.map((option) => (
-                        <option value={option.value}>{option.label}</option>
+                        <option key={option.value} value={option.value}>{option.label}</option>
                     ))}
                 </select>
             </div>

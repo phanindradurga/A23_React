@@ -12,8 +12,6 @@ const MyRewardsList = ({ myRewardsData, fetchMyRewards }) => {
 
     const [value, setValue] = useState('1');
     myRewardsData = JSON.parse(myRewardsData);
-    console.log('MyRewardsData : ', myRewardsData);
-    console.log('MyRewardsData1 : ', myRewardsData.successfulInvites);
 
     var unicode = '\u20b9';
 

@@ -28,7 +28,6 @@ function App() {
     };
     await axios.get('https://api.qapfgames.com/a23user/get_profile/', { headers })
       .then((response => {
-        console.log('Profile data ', response);
         setUserProfile(response.data)
       }))
       .catch((e) => console.log('error here', e))
@@ -80,7 +79,6 @@ function App() {
   }, [])
 
   const receivedResponse = (data) => {
-    console.log("Data is: ", data);
     setReferAndEarndata(data)
   }
 

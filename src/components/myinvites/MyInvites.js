@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 
 import EmptyReward from '../myrewards/EmptyReward'
@@ -6,14 +6,23 @@ import MyInvitesList from './MyInvitesList'
 
 const MyInvites = ({ clickHandler, myInvitesData, fetchMyIvites }) => {
 
-    const isBtnDisabled = true
+    const [btndisabled, setBtnDisabled] = useState(true)
     const isRewardsEmpty = false
+
+    const onItemsSelction = (recordList) => {
+        var selectedRecordsArray = recordList.filter(checkSelected)
+        setBtnDisabled(!(selectedRecordsArray && selectedRecordsArray.length > 0))
+    }
+
+    function checkSelected(record) {
+        return record.setSelection;
+    }
 
     return (
         <div>
-            {(isRewardsEmpty === true) ? <EmptyReward clickHandler={clickHandler} /> : <MyInvitesList myInvitesData={myInvitesData} fetchMyIvites={(selection) => fetchMyIvites(selection)} />}
+            {(isRewardsEmpty === true) ? <EmptyReward clickHandler={clickHandler} /> : <MyInvitesList myInvitesData={myInvitesData} fetchMyIvites={(selection) => fetchMyIvites(selection)} onItemsSelction={onItemsSelction} />}
             <div style={{ ...styles.btnContainer }}>
-                <div style={{ ...(isBtnDisabled ? styles.btnDisabled : styles.btn) }} >Invite again</div>
+                <div style={{ ...(btndisabled === true ? styles.btnDisabled : styles.btn) }} >Invite again</div>
             </div>
         </div >
     )
