@@ -44,6 +44,7 @@ const MyInvites = ({ clickHandler, myInvitesData, fetchMyIvites }) => {
             if (response.data.statusCode === 1181) {
                 console.log('get alert', childRef);
                 childRef.current.resetSelections()
+                alert(response.data.message)
             }
         }).catch((e) => {
 
