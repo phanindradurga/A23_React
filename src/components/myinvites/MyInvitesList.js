@@ -23,10 +23,10 @@ const MyInvitesList = ({ myInvitesData, fetchMyIvites }) => {
         { label: 'Last Month', value: '2' },
         { label: 'Last 3 Months', value: '3' },
     ];
-    const obj = JSON.parse(myInvitesData);
+    const obj = myInvitesData
     const records = obj.Items ? obj.Items : [data1, data2, data3]
 
-    console.log("records ", records);
+    console.log("records ", myInvitesData);
 
 
     const styles = {
@@ -102,7 +102,6 @@ const MyInvitesList = ({ myInvitesData, fetchMyIvites }) => {
 
     return (
         <div style={{ ...styles.mainContainer }}>
-            {getListHeader()}
             <div style={{ display: 'flex', margin: '1rem', justifyContent: 'flex-end' }}>
                 <select value={value} onChange={handleChange}>
                     {options.map((option) => (
@@ -110,6 +109,7 @@ const MyInvitesList = ({ myInvitesData, fetchMyIvites }) => {
                     ))}
                 </select>
             </div>
+            {getListHeader()}
             {getListItems()}
         </div>
     )
