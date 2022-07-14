@@ -10,6 +10,7 @@ import MyRewards from './components/myrewards/MyRewards';
 import MyInvites from './components/myinvites/MyInvites';
 import axios from 'axios';
 import { A23_TOKEN } from './Constants';
+import AddCash from './components/addCadh/AddCash';
 
 
 function App() {
@@ -122,13 +123,20 @@ function App() {
 
   return (
     <div className="App">
-      <HeaderTab tabs={tabsList} onPageSelected={(data) => onTabSelected(data)} pageID={pageID} />
-      {(pageID === 0) ? getReferNowPage() : ''}
-      {(pageID === 1) ? <MyRewards clickHandler={() => referNowClick()} myRewardsData={myRewards} fetchMyRewards={(selection) => fetchMyRewards(selection)} /> : ''}
-      {(pageID === 2) ? <MyInvites clickHandler={() => referNowClick()} myInvitesData={myInvites} fetchMyIvites={(selection) => fetchMyIvites(selection)} /> : ''}
-
+      <AddCash />
     </div>
-  );
+  )
+
+
+  // return (
+  //   <div className="App">
+  //     <HeaderTab tabs={tabsList} onPageSelected={(data) => onTabSelected(data)} pageID={pageID} />
+  //     {(pageID === 0) ? getReferNowPage() : ''}
+  //     {(pageID === 1) ? <MyRewards clickHandler={() => referNowClick()} myRewardsData={myRewards} fetchMyRewards={(selection) => fetchMyRewards(selection)} /> : ''}
+  //     {(pageID === 2) ? <MyInvites clickHandler={() => referNowClick()} myInvitesData={myInvites} fetchMyIvites={(selection) => fetchMyIvites(selection)} /> : ''}
+
+  //   </div>
+  // );
 }
 
 
