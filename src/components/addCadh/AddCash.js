@@ -46,7 +46,7 @@ const AddCash = () => {
     const getBonusLayout = () => {
         return (
             <div style={{
-                width: '90%',
+                width: '95%',
                 display: 'flex',
                 flexDirection: 'column',
                 height: '140px',
