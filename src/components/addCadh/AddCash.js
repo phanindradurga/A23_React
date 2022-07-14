@@ -5,6 +5,7 @@ import a23Logo from '../../images/pf_a23_logo.png'
 import bonusCouponBg from '../../images/pf_bonus_coupon.png'
 import timerIcon from '../../images/pf_bonus_coupon_timer.png'
 import infoIcon from '../../images/pf_wallet_info_icon.png'
+import a23CaresIcon from '../../images/pf_a23cares_iv_new.png'
 
 
 
@@ -33,10 +34,11 @@ const AddCash = () => {
 
     const body = () => {
         return (
-            <div style={{ flexGrow: 1, padding: '1rem', backgroundColor: '#FAF9F6' }}>
+            <div style={{ flexGrow: 1, padding: '1rem', backgroundColor: '#FAF9F6', display: 'flex', flexDirection: 'column' }}>
                 {enterAmountView()}
                 <div style={{ margin: '0.5rem 0' }}><span style={{ fontSize: 16, fontWeight: 500 }} >Bonus code</span> <span style={{ fontSize: 16, color: 'green', fontWeight: 500 }}>WELCOME175</span>  <span style={{ fontSize: 16, fontWeight: 500 }}>applied</span></div>
                 {getBonusLayout()}
+                <img src={a23CaresIcon} style={{ width: '60%', alignSelf: 'center', margin: '0.5rem 0' }} />
             </div>
         )
     }
