@@ -11,6 +11,7 @@ import MyInvites from './components/myinvites/MyInvites';
 import axios from 'axios';
 import { A23_TOKEN } from './Constants';
 import AddCash from './components/addCadh/AddCash';
+import AddCashStatus from './components/addCadh/AddCashStatus';
 
 
 
@@ -124,7 +125,8 @@ function App() {
 
   return (
     <div className="App">
-      <AddCash />
+      {/* <AddCash /> */}
+      <AddCashStatus />
     </div>
   )
 
