@@ -12,7 +12,6 @@ const MyInvites = ({ clickHandler, myInvitesData, fetchMyIvites }) => {
 
     const [btndisabled, setBtnDisabled] = useState(true)
     const isRewardsEmpty = false
-    console.log('handleInviteAgain2 ', selectedArray);
 
     const childRef = useRef()
 
@@ -40,9 +39,7 @@ const MyInvites = ({ clickHandler, myInvitesData, fetchMyIvites }) => {
             'Content-Type': 'application/json'
         };
         await axios.post('https://api.qapfgames.com/a23user/send_invite/', body, { headers }).then(response => {
-            console.log("reponse invite ", response.data);
             if (response.data.statusCode === 1181) {
-                console.log('get alert', childRef);
                 childRef.current.resetSelections()
                 alert(response.data.message)
             }

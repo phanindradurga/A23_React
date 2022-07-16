@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import backArrow from '../../images/pf_header_arrow.png'
 import a23Logo from '../../images/pf_a23_logo.png'
@@ -6,6 +6,7 @@ import bonusCouponBg from '../../images/pf_bonus_coupon.png'
 import timerIcon from '../../images/pf_bonus_coupon_timer.png'
 import infoIcon from '../../images/pf_wallet_info_icon.png'
 import a23CaresIcon from '../../images/pf_a23cares_iv_new.png'
+import axios from 'axios'
 
 
 
@@ -15,8 +16,56 @@ import a23CaresIcon from '../../images/pf_a23cares_iv_new.png'
 
 
 const AddCash = () => {
+
+
+    const [consolidatedAddCashDetails, setConsolidatedAddCashDetails] = useState({})
+    const [selectedAmountPos, setSelectedAmountPos] = useState(-1)
+    const [addCashAmount, setAddCashAmount] = useState()
+    const [appliedCode, setAppliedBonusCode] = useState("")
+    const isAmountAutoSelected = false
+
     const inputRef = useRef(null);
 
+    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI4NW96YXc2OHQ2dmxrMHgiLCJzY3JlZW5OYW1lIjoibmV3YWRkY2FzaHoiLCJtb2JpbGUiOiIrOTE5NDI1MjQyMzQyIiwic3RhdHVzIjp0cnVlLCJkZXZpY2VfaWQiOiIxYTU0NzIxNDVjZjQxODY5IiwiY2hhbm5lbCI6IkEyM0FQUyIsInBsYXllclN0YXR1cyI6Im51bGwiLCJpYXQiOjE2NTc5MDkyNTQsImV4cCI6MTY1Nzk5NTY1NH0.yrrxLOZ57jgZqsjFTxF5TV1lsgCfc0p0AKjmlF6E7FE"
+
+    const fetchConsolidatedAddCashDetails = async () => {
+        const headers = {
+            'Authorization': A23_TOKEN,
+        };
+
+        const body = {
+            "channel": "A23APS",
+            "playerType": "regular"
+        }
+
+        await axios.post('https://api.qapfgames.com/addcash/consolidated_addcash/', body, { headers })
+            .then((response => {
+                setConsolidatedAddCashDetails(response.data);
+
+            }))
+            .catch((e) => { console.log('error here', e) })
+    }
+
+    const setDefaultAddCashSuggestion = () => {
+        console.log("ok", consolidatedAddCashDetails);
+        if (consolidatedAddCashDetails.suggestions && consolidatedAddCashDetails.suggestions.R0Suggestions) {
+            consolidatedAddCashDetails.suggestions.R0Suggestions.map((record) => {
+                if (record.disable === false) {
+
+                }
+            })
+        }
+    }
+
+    useEffect(() => {
+        fetchConsolidatedAddCashDetails()
+    }, [])
+
+
+    const handleSuggestionAmountClick = (index) => {
+        setSelectedAmountPos(index)
+        setAddCashAmount(consolidatedAddCashDetails.suggestions.R0Suggestions[index].amount)
+    }
 
     const navHeader = () => {
         return <div style={{ ...styles.navHeader }}>
@@ -36,7 +85,7 @@ const AddCash = () => {
         return (
             <div style={{ flexGrow: 1, padding: '1rem', backgroundColor: '#FAF9F6', display: 'flex', flexDirection: 'column' }}>
                 {enterAmountView()}
-                <div style={{ margin: '0.5rem 0' }}><span style={{ fontSize: 16, fontWeight: 500 }} >Bonus code</span> <span style={{ fontSize: 16, color: 'green', fontWeight: 500 }}>WELCOME175</span>  <span style={{ fontSize: 16, fontWeight: 500 }}>applied</span></div>
+                <div style={{ margin: '0.5rem 0' }}><span style={{ fontSize: 16, fontWeight: 500 }} >Bonus code</span> <span style={{ fontSize: 16, color: 'green', fontWeight: 500 }}>{appliedCode}</span>  <span style={{ fontSize: 16, fontWeight: 500 }}>applied</span></div>
                 {getBonusLayout()}
                 <img src={a23CaresIcon} style={{ width: '60%', alignSelf: 'center', margin: '0.5rem 0' }} />
             </div>
@@ -44,39 +93,62 @@ const AddCash = () => {
     }
 
     const getBonusLayout = () => {
+
         return (
-            <div style={{
-                width: '95%',
-                display: 'flex',
-                flexDirection: 'column',
-                height: '140px',
-                margin: '0 auto',
-                boxSizing: 'border-box',
-                backgroundSize: '100% 100%', backgroundImage: `url(${bonusCouponBg})`
-            }}>
-                <div style={{ height: '25%', justifyContent: 'space-between', display: 'flex', alignItems: 'center', padding: '0 0.6rem' }}>
-                    <span style={{ fontSize: 12, fontWeight: 600 }}>Get up to 175% Bonus (Max: ₹ 5200 )</span>
-                    <span style={{ fontSize: 12 }}>You get ₹1300</span>
-                </div>
-                <div style={{ height: '75%', display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '0 0.6rem' }}>
-                    <div>
-                        <img src={timerIcon} style={{ width: 25 }} />
-                    </div>
-                    <div style={{ display: 'flex', flexGrow: 1, flexDirection: 'column', textAlign: 'start', margin: '0 0.5rem' }}>
-                        <span style={{ fontSize: 14, color: '#075063', marginBottom: '0.5rem' }}>Valid till 30-jul @4:18 PM</span>
-                        <span style={{ fontSize: 12, color: '#032146' }}>Code: WELCOME175</span>
-                    </div>
-                    <div>
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <div style={{ ...styles.btnContainer }}>
-                                <div style={{ ...styles.btn }} >Apply</div>
+            <div style={{ display: 'flex', width: '95%', height: '150px', flexDirection: 'row', overflow: 'hidden', overflowY: 'hidden', overflowX: 'scroll' }}>
+                {(consolidatedAddCashDetails
+                    && consolidatedAddCashDetails.playerbonus
+                    && consolidatedAddCashDetails.playerbonus.listOfBonus
+                    && consolidatedAddCashDetails.playerbonus.listOfBonus.length > 0) &&
+
+                    consolidatedAddCashDetails.playerbonus.listOfBonus.map((bonus) => {
+                        return <div key={bonus.bonusCode} style={{
+                            display: 'flex',
+                            width: '1000px',
+                            marginRight: '1rem',
+                            flexDirection: 'column',
+                            height: '140px',
+                            backgroundSize: '100% 100%', backgroundImage: `url(${bonusCouponBg})`
+                        }}>
+
+                            <div style={{ height: '25%', justifyContent: 'space-between', display: 'flex', alignItems: 'center', padding: '0 0.6rem' }}>
+                                <span style={{ fontSize: 12, fontWeight: 600 }}>Get up to {bonus.bonusPercent}% Bonus (Max: ₹ {bonus.maxBonus} )</span>
+                                <span style={{ fontSize: 12 }}>You get ₹1300</span>
                             </div>
-                            <span style={{ fontSize: 10, color: '#075063' }}> More Details</span>
+                            <div style={{ height: '75%', display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '0 0.6rem' }}>
+                                <div>
+                                    <img src={timerIcon} style={{ width: 25 }} />
+                                </div>
+                                <div style={{ display: 'flex', flexGrow: 1, flexDirection: 'column', textAlign: 'start', margin: '0 0.5rem' }}>
+                                    <span style={{ fontSize: 14, color: '#075063', marginBottom: '0.5rem' }}>Valid till 30-jul @4:18 PM</span>
+                                    <span style={{ fontSize: 12, color: '#032146' }}>Code: {bonus.bonusCode}</span>
+                                </div>
+                                <div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                        <div style={{ ...styles.btnContainer }}>
+                                            <div style={{ ...(appliedCode === bonus.bonusCode ? styles.btnApplied : styles.btn) }} onClick={() => handleBonusApply(bonus.bonusCode)} >{appliedCode === bonus.bonusCode ? 'Applied' : 'Apply'} </div>
+                                        </div>
+                                        <span style={{ fontSize: 10, color: '#075063' }}> More Details</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    })
+                }
             </div>
         )
+    }
+
+    const handleBonusApply = (bonusCode) => {
+        setAppliedBonusCode(bonusCode)
+    }
+
+    const isSelectionRequired = (index, amount) => {
+        if (selectedAmountPos === index || amount == addCashAmount) {
+            return true
+        } else {
+            return false
+        }
     }
 
     const enterAmountView = () => {
@@ -87,25 +159,27 @@ const AddCash = () => {
                     <span style={{ fontSize: 20 }} onClick={() => focusOnInput()}>
                         ₹
                     </span>
-                    <input ref={inputRef} style={{ flexGrow: 1, background: 'transparent', borderStyle: 'none', border: 0, outline: 'none', paddingBottom: '0.5rem' }} />
+                    <input ref={inputRef} value={addCashAmount} onChange={(event) => {
+                        setSelectedAmountPos(-1)
+                        setAddCashAmount(event.target.value)
+                    }} style={{ flexGrow: 1, background: 'transparent', borderStyle: 'none', border: 0, outline: 'none', paddingBottom: '0.5rem' }} />
                     <span style={{ fontSize: 12, color: 'gray' }} onClick={() => focusOnInput()}>(₹25 to ₹10000)</span>
                 </div>
 
                 <span style={{ margin: '0.5rem 0', fontSize: 12, color: 'red' }}>Pleae enter amount</span>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <div style={{ backgroundColor: 'white', borderColor: '#CBCBCB', borderStyle: 'solid', borderRadius: '0.3rem', width: '23%', justifyContent: 'center', display: 'flex', margin: '0.5rem 0', alignSelf: 'center', padding: '0.4rem 0' }}>
-                        ₹1000
-                    </div>
-                    <div style={{ backgroundColor: 'white', borderColor: '#CBCBCB', borderStyle: 'solid', borderRadius: '0.3rem', width: '23%', justifyContent: 'center', display: 'flex', margin: '0.5rem 0', alignSelf: 'center', padding: '0.4rem 0' }}>
-                        ₹500
-                    </div>
-                    <div style={{ backgroundColor: 'white', borderColor: '#CBCBCB', borderStyle: 'solid', borderRadius: '0.3rem', width: '23%', justifyContent: 'center', display: 'flex', margin: '0.5rem 0', alignSelf: 'center', padding: '0.4rem 0' }}>
-                        ₹200
-                    </div>
-                    <div style={{ backgroundColor: 'white', borderColor: '#CBCBCB', borderStyle: 'solid', borderRadius: '0.3rem', width: '23%', justifyContent: 'center', display: 'flex', margin: '0.5rem 0', alignSelf: 'center', padding: '0.4rem 0' }}>
-                        ₹100
-                    </div>
+
+                    {(consolidatedAddCashDetails.suggestions && consolidatedAddCashDetails.suggestions.R0Suggestions) &&
+
+                        consolidatedAddCashDetails.suggestions.R0Suggestions.map((record, index) => {
+                            return <div onClick={() => handleSuggestionAmountClick(index)} key={record.amount} style={{ backgroundColor: (isSelectionRequired(index, record.amount) === true) ? 'gray' : 'white', borderColor: '#CBCBCB', borderStyle: 'solid', borderRadius: '0.3rem', width: '23%', justifyContent: 'center', display: 'flex', margin: '0.5rem 0', alignSelf: 'center', padding: '0.4rem 0' }}>
+                                ₹{record.amount}
+                            </div>
+                        })
+                    }
+
+
                 </div>
 
             </div>
@@ -188,6 +262,16 @@ const styles = {
         fontWeight: '500',
         fontSize: 16,
         color: 'white', padding: '0.2rem 1.2rem',
+        borderStyle: 'solid', borderRadius: '0.5rem',
+
+    },
+    btnApplied: {
+        borderColor: 'green',
+        backgroundColor: 'white',
+        borderStyle: 'solid',
+        fontWeight: '400',
+        fontSize: 14,
+        color: 'green', padding: '0.2rem 1.2rem',
         borderStyle: 'solid', borderRadius: '0.5rem',
 
     },

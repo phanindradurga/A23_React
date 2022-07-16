@@ -77,10 +77,10 @@ function App() {
   }
 
   useEffect(() => {
-    fetchProfile()
-    fetchReNData()
-    fetchMyRewards()
-    fetchMyIvites()
+    // fetchProfile()
+    // fetchReNData()
+    // fetchMyRewards()
+    // fetchMyIvites()
   }, [])
 
   const receivedResponse = (data) => {
@@ -125,8 +125,8 @@ function App() {
 
   return (
     <div className="App">
-      {/* <AddCash /> */}
-      <AddCashStatus />
+      <AddCash />
+      {/* <AddCashStatus /> */}
     </div>
   )
 

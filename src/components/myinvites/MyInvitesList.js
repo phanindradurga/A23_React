@@ -29,7 +29,6 @@ const MyInvitesList = forwardRef((props, ref) => {
     var records = obj.Items ? obj.Items : [data1, data2, data3]
     const [recordsData, setRecordsData] = useState(records)
 
-    console.log('my data is ', recordsData);
 
     useImperativeHandle(ref, () => ({
 
