@@ -1,4 +1,6 @@
 import icon from '../../images/pf_rne_success_invites_img.png'
+import React from 'react'
+
 import icon1 from '../../images/pf_rne_bonus_img.png'
 import plusIcon from '../../images/pf_rne_myrewards_plusicon.png'
 import { useState } from 'react'
