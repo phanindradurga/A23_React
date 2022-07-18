@@ -8,6 +8,7 @@ import infoIcon from '../../images/pf_wallet_info_icon.png'
 import a23CaresIcon from '../../images/pf_a23cares_iv_new.png'
 import axios from 'axios'
 import BonusDetailsDialog from './BonusDeatilsDialog'
+import { getNodeText } from '@testing-library/react'
 
 var bonusSelected = undefined
 
@@ -166,9 +167,17 @@ const AddCash = () => {
                 {enterAmountView()}
                 <div style={{ margin: '0.5rem 0' }}><span style={{ fontSize: 16, fontWeight: 500 }} >Bonus code</span> <span style={{ fontSize: 16, color: 'green', fontWeight: 500 }}>{appliedCode}</span>  <span style={{ fontSize: 16, fontWeight: 500 }}>applied</span></div>
                 {getBonusLayout()}
+                {getAddCashNodeText()}
                 <img src={a23CaresIcon} style={{ width: '60%', alignSelf: 'center', margin: '0.5rem 0' }} />
             </div>
         )
+    }
+
+    const getAddCashNodeText = () => {
+        const text = "Please note that in order to play real money games, you must be 18 years of age and you should not be residing in states of Assam, Nagaland, Orissa, Sikkim, Telangana and Andra Pradesh."
+        return <div style={{ borderStyle: 'solid', borderColor: '#8B99AB', borderRadius: '0.3rem', borderWidth: '0.5px', boxSizing: 'border-box', padding: '0.2rem', margin: '0.5rem 0' }}>
+            <span style={{ fontSize: 9, color: '#8B99AB' }}>{text}</span>
+        </div>
     }
 
 
