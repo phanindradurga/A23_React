@@ -245,7 +245,7 @@ const AddCash = () => {
     const enterAmountView = () => {
         return (
             <div style={{ ...styles.enterAmountContainer }}>
-                <span style={{ fontSize: 16, fontWeight: 400 }}>Enter Amount</span>
+                <div style={{ fontSize: 16, fontWeight: 400 }}>Enter Amount</div>
                 <div style={{ display: 'flex', borderBottomStyle: 'solid', borderBottomColor: '#000', marginTop: 10 }}>
                     <span style={{ fontSize: 20 }} onClick={() => focusOnInput()}>
                         ₹
@@ -255,8 +255,8 @@ const AddCash = () => {
                         setAddCashAmount(event.target.value)
                         calculateBonus(event.target.value)
 
-                    }} style={{ flexGrow: 1, background: 'transparent', borderStyle: 'none', border: 0, outline: 'none', paddingBottom: '0.5rem', fontSize: 25, fontWeight: 600 }} />
-                    <span style={{ fontSize: 12, color: 'gray' }} onClick={() => focusOnInput()}>(₹25 to ₹10000)</span>
+                    }} style={{ flexGrow: 1, background: 'transparent', borderStyle: 'none', border: 0, outline: 'none', paddingBottom: '0.5rem', fontSize: 22, fontWeight: 600 }} />
+                    <div style={{ fontSize: 8, color: 'gray', display: 'flex', justifyContent: 'center', alignSelf: 'center' }} onClick={() => focusOnInput()}>(₹25 to ₹10000)</div>
                 </div>
 
                 <span style={{ margin: '0.5rem 0', fontSize: 12, color: 'red' }}>Pleae enter amount</span>
@@ -346,15 +346,13 @@ const styles = {
     },
     enterAmountContainer: {
         display: 'flex',
-
+        boxSizing: 'border-box',
         backgroundColor: '#FFFDEA',
         borderColor: '#EABF6945',
         borderRadius: '6px',
         borderStyle: 'solid',
         borderWidth: '1px',
-        boxSizing: 'border-box',
-
-        padding: 12,
+        padding: 6,
         width: '100%',
         flexDirection: 'column'
     },
