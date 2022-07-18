@@ -43,7 +43,7 @@ const AddCash = () => {
 
     const inputRef = useRef(null);
 
-    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxcDMxMGpwZHJ0dGN0ZGkiLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE1IiwibW9iaWxlIjoiKzkxODQ1NDUyMzUzNCIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiOTRmYjMzMDA5ZGFlNzc4MiIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4MTQyMDAwLCJleHAiOjE2NTgyMjg0MDB9.nh-B6LnfvztCxdZSz9h3cYGLbxzhWIpdtqLns2NN70w"
+    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ4cmZ5Z29zNHBtaWJnY3YiLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE2IiwibW9iaWxlIjoiKzkxODIzNTIzNDIzNCIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiMmMzYjg5MWZhMjE4YTM0YSIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4MTYzMDk2LCJleHAiOjE2NTgyNDk0OTZ9.t_ICNDlAoJIL0DgGMzsIP_4xMNUoKREQOjf-kQ6joig"
 
     const fetchConsolidatedAddCashDetails = async () => {
         const headers = {
@@ -295,7 +295,7 @@ const AddCash = () => {
                             <img src={infoIcon} style={{ width: '15px', height: '15px' }} />
                         </div>
                         <span style={{ color: '#21889A', fontWeight: '600' }}>
-                            ₹{bonusInfo.bonus}
+                            ₹{parseInt(bonusInfo.bonus)}
                         </span>
                     </div>
                 </div>
@@ -314,7 +314,7 @@ const AddCash = () => {
             {body()}
             {addCashFooter()}
 
-            <BonusDetailsDialog open={open} closeClick={handleToClose} bonusInfo={bonusSelected} />
+            <BonusDetailsDialog open={open} closeClick={handleToClose} bonusInfo={bonusSelected} handleBonusApply={handleBonusApply} appliedCode={appliedCode} />
         </div>
     )
 }
