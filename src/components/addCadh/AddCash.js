@@ -7,26 +7,43 @@ import timerIcon from '../../images/pf_bonus_coupon_timer.png'
 import infoIcon from '../../images/pf_wallet_info_icon.png'
 import a23CaresIcon from '../../images/pf_a23cares_iv_new.png'
 import axios from 'axios'
+import BonusDetailsDialog from './BonusDeatilsDialog'
 
+var bonusSelected = undefined
 
-
-
-
-
-
+var lockedBonus = 0
+var instantBonus = 0
 
 const AddCash = () => {
 
 
+    const [open, setOpen] = useState(false);
+
+    const [bonusInfo, setBonusInfo] = useState({
+        "amount": -1,
+        "bonus": -1
+    })
+
+    const handleClickToOpen = (bonus) => {
+        console.log("Bonus", bonus);
+        bonusSelected = bonus
+        setOpen(true);
+    };
+
+    const handleToClose = () => {
+        console.log("handle close");
+        setOpen(false);
+    };
+
     const [consolidatedAddCashDetails, setConsolidatedAddCashDetails] = useState({})
     const [selectedAmountPos, setSelectedAmountPos] = useState(-1)
-    const [addCashAmount, setAddCashAmount] = useState()
+    const [addCashAmount, setAddCashAmount] = useState("")
     const [appliedCode, setAppliedBonusCode] = useState("")
     const isAmountAutoSelected = false
 
     const inputRef = useRef(null);
 
-    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI4NW96YXc2OHQ2dmxrMHgiLCJzY3JlZW5OYW1lIjoibmV3YWRkY2FzaHoiLCJtb2JpbGUiOiIrOTE5NDI1MjQyMzQyIiwic3RhdHVzIjp0cnVlLCJkZXZpY2VfaWQiOiIxYTU0NzIxNDVjZjQxODY5IiwiY2hhbm5lbCI6IkEyM0FQUyIsInBsYXllclN0YXR1cyI6Im51bGwiLCJpYXQiOjE2NTc5MDkyNTQsImV4cCI6MTY1Nzk5NTY1NH0.yrrxLOZ57jgZqsjFTxF5TV1lsgCfc0p0AKjmlF6E7FE"
+    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxcDMxMGpwZHJ0dGN0ZGkiLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE1IiwibW9iaWxlIjoiKzkxODQ1NDUyMzUzNCIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiOTRmYjMzMDA5ZGFlNzc4MiIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4MTQyMDAwLCJleHAiOjE2NTgyMjg0MDB9.nh-B6LnfvztCxdZSz9h3cYGLbxzhWIpdtqLns2NN70w"
 
     const fetchConsolidatedAddCashDetails = async () => {
         const headers = {
@@ -44,6 +61,64 @@ const AddCash = () => {
 
             }))
             .catch((e) => { console.log('error here', e) })
+    }
+
+    const calculateBonus = (enteredAmount) => {
+        if (bonusSelected === undefined) {
+            return
+        }
+
+        if (enteredAmount === undefined) {
+            enteredAmount = addCashAmount
+        }
+
+        const selectedBonus = bonusSelected
+        console.log("selectedBonus", enteredAmount);
+        const amount = enteredAmount === "" ? 0 : parseInt(enteredAmount)
+
+        lockedBonus = 0
+        instantBonus = 0
+
+        if (amount < parseInt(selectedBonus.minPurchase)) {
+
+            return
+        }
+
+        const levels = selectedBonus.levelDetails
+        const maxBonus = parseInt(selectedBonus.maxBonus)
+
+        levels.map((level, index) => {
+            const minPurchase = level.minPurchase
+            const maxPurchase = level.maxPurchase
+
+            //if ((index == levels.length - 1 && amount >= minPurchase) || (amount >= minPurchase && amount <= maxPurchase)) {
+
+            if (amount >= minPurchase && amount <= maxPurchase) {
+                const bonusPercentage = parseInt(level.bonusPercent)
+                const instantBonusPercentage = parseInt(level.instantBonusPercentage)
+                const flatInstantBonus = parseInt(level.flatInstantBonus)
+
+                var bonus = (amount * bonusPercentage) / 100
+                bonus = Math.min(bonus, maxBonus - flatInstantBonus);
+
+                const instantBonuss = (bonus * instantBonusPercentage) / 100
+                instantBonus = instantBonuss + flatInstantBonus
+                lockedBonus = bonus - instantBonuss
+
+                setBonusInfo({
+                    "amount": amount + instantBonus,
+                    "bonus": lockedBonus
+                })
+
+                console.log("amount : ", amount + instantBonus);
+                console.log("locked : ", lockedBonus)
+                return true
+            }
+        })
+
+
+
+
     }
 
     const setDefaultAddCashSuggestion = () => {
@@ -65,6 +140,7 @@ const AddCash = () => {
     const handleSuggestionAmountClick = (index) => {
         setSelectedAmountPos(index)
         setAddCashAmount(consolidatedAddCashDetails.suggestions.R0Suggestions[index].amount)
+        calculateBonus(consolidatedAddCashDetails.suggestions.R0Suggestions[index].amount)
     }
 
     const navHeader = () => {
@@ -126,9 +202,9 @@ const AddCash = () => {
                                 <div>
                                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                         <div style={{ ...styles.btnContainer }}>
-                                            <div style={{ ...(appliedCode === bonus.bonusCode ? styles.btnApplied : styles.btn) }} onClick={() => handleBonusApply(bonus.bonusCode)} >{appliedCode === bonus.bonusCode ? 'Applied' : 'Apply'} </div>
+                                            <div style={{ ...(appliedCode === bonus.bonusCode ? styles.btnApplied : styles.btn) }} onClick={() => handleBonusApply(bonus)} >{appliedCode === bonus.bonusCode ? 'Applied' : 'Apply'} </div>
                                         </div>
-                                        <span style={{ fontSize: 10, color: '#075063' }}> More Details</span>
+                                        <span style={{ fontSize: 10, color: '#075063' }} onClick={() => handleClickToOpen(bonus)}> More Details</span>
                                     </div>
                                 </div>
                             </div>
@@ -139,8 +215,10 @@ const AddCash = () => {
         )
     }
 
-    const handleBonusApply = (bonusCode) => {
-        setAppliedBonusCode(bonusCode)
+    const handleBonusApply = (bonus) => {
+        bonusSelected = bonus
+        setAppliedBonusCode(bonus.bonusCode)
+        calculateBonus()
     }
 
     const isSelectionRequired = (index, amount) => {
@@ -162,6 +240,8 @@ const AddCash = () => {
                     <input ref={inputRef} value={addCashAmount} onChange={(event) => {
                         setSelectedAmountPos(-1)
                         setAddCashAmount(event.target.value)
+                        calculateBonus(event.target.value)
+
                     }} style={{ flexGrow: 1, background: 'transparent', borderStyle: 'none', border: 0, outline: 'none', paddingBottom: '0.5rem' }} />
                     <span style={{ fontSize: 12, color: 'gray' }} onClick={() => focusOnInput()}>(₹25 to ₹10000)</span>
                 </div>
@@ -186,24 +266,28 @@ const AddCash = () => {
         )
     }
 
+    const openAlert = () => {
+
+    }
+
     const addCashFooter = () => {
         return (
             <div style={{ backgroundColor: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', margin: '1rem 0', alignItems: 'center' }}>
 
                 <span style={{ fontSize: 16, fontWeight: '500', color: '#0F407B' }}>YOU GET</span>
 
-                <div style={{ display: 'flex', flexDirection: 'row', margin: '0.5rem 0' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                {bonusSelected ? <div style={{ display: 'flex', flexDirection: 'row', margin: '0.5rem 0', width: '100%', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', width: '49%' }}>
                         <span style={{ color: '#0F407B', fontWeight: '400' }}>
                             Cash
                         </span>
                         <span style={{ color: '#0F407B', fontWeight: '600' }}>
-                            ₹1050
+                            ₹{bonusInfo.amount}
                         </span>
                     </div>
 
-                    <div style={{ width: '1.5px', height: '100%', backgroundColor: 'gray', margin: '0 0.5rem' }} />
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <div style={{ width: '1px', height: '100%', backgroundColor: 'gray', margin: '0 0.5rem' }} />
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '49%' }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <span style={{ color: '#21889A', fontWeight: '400', marginRight: '0.2rem' }}>
                                 Free Bonus
@@ -211,13 +295,13 @@ const AddCash = () => {
                             <img src={infoIcon} style={{ width: '15px', height: '15px' }} />
                         </div>
                         <span style={{ color: '#21889A', fontWeight: '600' }}>
-                            ₹1050
+                            ₹{bonusInfo.bonus}
                         </span>
                     </div>
                 </div>
-
+                    : <span style={{ margin: '0.5rem 0' }}> ₹{addCashAmount}</span>}
                 <div style={{ ...styles.btnContainer, marginTop: '0.5rem' }}>
-                    <div style={{ ...styles.btn, width: '70vw', textAlign: 'center', padding: '0.5rem', fontSize: 20 }} >Add ₹1000</div>
+                    <div style={{ ...styles.btn, width: '70vw', textAlign: 'center', padding: '0.5rem', fontSize: 20 }} >Add ₹{addCashAmount}</div>
                 </div>
             </div>
         )
@@ -230,7 +314,7 @@ const AddCash = () => {
             {body()}
             {addCashFooter()}
 
-
+            <BonusDetailsDialog open={open} closeClick={handleToClose} bonusInfo={bonusSelected} />
         </div>
     )
 }
