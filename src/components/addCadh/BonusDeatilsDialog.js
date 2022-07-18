@@ -41,11 +41,14 @@ const BonusDetailsDialog = ({ open, closeClick, bonusInfo = {}, handleBonusApply
         },
         tableCell1: {
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11,
-            padding: '0.5rem 0', textAlign: 'center', width: '25%', borderRightStyle: 'solid', borderRightColor: '#EABF69', borderRightWidth: '0.2px'
+            padding: '0.5rem 0', textAlign: 'center', width: '25%', borderRightStyle: 'solid', borderRightColor: '#EABF69', borderRightWidth: '0.2px', color: '#0F407B'
         },
         tableCell2: {
-            fontSize: 11, padding: '0.5rem 0.2rem', alignItems: 'center', justifyContent: 'center', width: '25%',
+            fontSize: 11, padding: '0.5rem 0.2rem', alignItems: 'center', justifyContent: 'center', width: '25%', color: '#0F407B',
             display: 'flex', flexDirection: 'column'
+        },
+        bulletPoint: {
+            color: '#032146', fontSize: 13
         }
     }
 
@@ -59,7 +62,7 @@ const BonusDetailsDialog = ({ open, closeClick, bonusInfo = {}, handleBonusApply
 
     const getBonusHeader = () => {
         return <div style={{
-            marginTop: '1rem', boxSizing: 'border-box', display: 'flex', width: '100%',
+            marginTop: '1rem', boxSizing: 'border-box', display: 'flex', width: '100%', color: '#04264a',
             justifyContent: 'space-between', backgroundColor: '#EABF69', borderColor: '#EABF69',
             border: '1px solid #EABF69', borderBottom: 0, borderRadius: '0.3rem 0.3rem 0 0'
         }}>
@@ -72,11 +75,11 @@ const BonusDetailsDialog = ({ open, closeClick, bonusInfo = {}, handleBonusApply
 
     const getBulletPoints = () => {
         return <div style={{ marginTop: '1rem' }}>
-            <li style={{ fontSize: 13 }}>Bonus will expire within 10 days from issued date</li>
-            <li style={{ fontSize: 13 }}>Bonus code is valid till</li>
-            <li style={{ fontSize: 13 }}>For details regarding locked bonus visit \'Menu\' → \'Promotions\' → \'Bonus Summary\'</li>
-            <li style={{ fontSize: 13 }}>Bonus release criteria varies as per Ace Level</li>
-            <li style={{ fontSize: 13 }}>A23 Games T&amp;C\'s apply</li>
+            <li style={{ ...styles.bulletPoint }}>Bonus will expire within 10 days from issued date</li>
+            <li style={{ ...styles.bulletPoint }}>Bonus code is valid till</li>
+            <li style={{ ...styles.bulletPoint }}>For details regarding locked bonus visit \'Menu\' → \'Promotions\' → \'Bonus Summary\'</li>
+            <li style={{ ...styles.bulletPoint }}>Bonus release criteria varies as per Ace Level</li>
+            <li style={{ ...styles.bulletPoint }}>A23 Games T&amp;C\'s apply</li>
 
         </div>
     }
@@ -178,7 +181,7 @@ const BonusDetailsDialog = ({ open, closeClick, bonusInfo = {}, handleBonusApply
                 </div>
 
                 <div style={{ margin: '0.5rem 0.5rem' }}>
-                    <span style={{ fontWeight: 500, fontSize: 14 }}>{bonusInfo.bonusCode} Bonus details</span>
+                    <span style={{ fontWeight: 500, fontSize: 14, color: '#032146' }}>{bonusInfo.bonusCode} Bonus details</span>
                     {getBonusTable()}
 
                     <div style={{ ...styles.btnContainer }} onClick={() => {

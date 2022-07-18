@@ -80,7 +80,10 @@ const AddCash = () => {
         instantBonus = 0
 
         if (amount < parseInt(selectedBonus.minPurchase)) {
-
+            setBonusInfo({
+                "amount": -1,
+                "bonus": -1
+            })
             return
         }
 
@@ -168,6 +171,7 @@ const AddCash = () => {
         )
     }
 
+
     const getBonusLayout = () => {
 
         return (
@@ -178,7 +182,7 @@ const AddCash = () => {
                     && consolidatedAddCashDetails.playerbonus.listOfBonus.length > 0) &&
 
                     consolidatedAddCashDetails.playerbonus.listOfBonus.map((bonus) => {
-                        return <div key={bonus.bonusCode} style={{
+                        return bonus.hiddenBonusFlag === false && <div key={bonus.bonusCode} style={{
                             display: 'flex',
                             width: '1000px',
                             marginRight: '1rem',
@@ -189,7 +193,7 @@ const AddCash = () => {
 
                             <div style={{ height: '25%', justifyContent: 'space-between', display: 'flex', alignItems: 'center', padding: '0 0.6rem' }}>
                                 <span style={{ fontSize: 12, fontWeight: 600 }}>Get up to {bonus.bonusPercent}% Bonus (Max: ₹ {bonus.maxBonus} )</span>
-                                <span style={{ fontSize: 12 }}>You get ₹1300</span>
+                                <span style={{ fontSize: 12 }}>{addCashAmount < bonus.minPurchase ? 'Add Min ₹' + bonus.minPurchase : 'You get '}</span>
                             </div>
                             <div style={{ height: '75%', display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '0 0.6rem' }}>
                                 <div>
@@ -276,7 +280,7 @@ const AddCash = () => {
 
                 <span style={{ fontSize: 16, fontWeight: '500', color: '#0F407B' }}>YOU GET</span>
 
-                {bonusSelected ? <div style={{ display: 'flex', flexDirection: 'row', margin: '0.5rem 0', width: '100%', justifyContent: 'center' }}>
+                {bonusSelected && addCashAmount > 0 && bonusInfo.amount > 0 ? <div style={{ display: 'flex', flexDirection: 'row', margin: '0.5rem 0', width: '100%', justifyContent: 'center' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', width: '49%' }}>
                         <span style={{ color: '#0F407B', fontWeight: '400' }}>
                             Cash
