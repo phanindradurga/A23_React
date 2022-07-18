@@ -354,7 +354,8 @@ const styles = {
         borderWidth: '1px',
         padding: 6,
         width: '100%',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        overflow: 'hidden'
     },
     btn: {
         background: 'linear-gradient(270deg ,#35A753, #276E3A)',
