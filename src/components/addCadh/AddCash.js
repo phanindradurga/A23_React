@@ -255,7 +255,7 @@ const AddCash = () => {
                         setAddCashAmount(event.target.value)
                         calculateBonus(event.target.value)
 
-                    }} style={{ flexGrow: 1, background: 'transparent', borderStyle: 'none', border: 0, outline: 'none', paddingBottom: '0.5rem' }} />
+                    }} style={{ flexGrow: 1, background: 'transparent', borderStyle: 'none', border: 0, outline: 'none', paddingBottom: '0.5rem', fontSize: 25, fontWeight: 600 }} />
                     <span style={{ fontSize: 12, color: 'gray' }} onClick={() => focusOnInput()}>(₹25 to ₹10000)</span>
                 </div>
 
@@ -266,7 +266,11 @@ const AddCash = () => {
                     {(consolidatedAddCashDetails.suggestions && consolidatedAddCashDetails.suggestions.R0Suggestions) &&
 
                         consolidatedAddCashDetails.suggestions.R0Suggestions.map((record, index) => {
-                            return <div onClick={() => handleSuggestionAmountClick(index)} key={record.amount} style={{ backgroundColor: (isSelectionRequired(index, record.amount) === true) ? '#FCEBB6' : 'white', borderColor: (isSelectionRequired(index, record.amount) === true) ? '#EABF69' : '#CBCBCB', borderStyle: 'solid', borderRadius: '0.3rem', width: '23%', justifyContent: 'center', display: 'flex', margin: '0.5rem 0', alignSelf: 'center', padding: '0.4rem 0' }}>
+                            return <div onClick={() => handleSuggestionAmountClick(index)} key={record.amount} style={{
+                                backgroundColor: (isSelectionRequired(index, record.amount) === true) ? '#FCEBB6' : 'white',
+                                borderColor: (isSelectionRequired(index, record.amount) === true) ? '#EABF69' : '#CBCBCB', borderStyle: 'solid', borderRadius: '0.3rem',
+                                width: '23%', justifyContent: 'center', display: 'flex', margin: '0.5rem 0', alignSelf: 'center', padding: '0.4rem 0', fontSize: 16, fontWeight: 600
+                            }}>
                                 ₹{record.amount}
                             </div>
                         })
