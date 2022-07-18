@@ -176,7 +176,7 @@ const AddCash = () => {
     const getAddCashNodeText = () => {
         const text = "Please note that in order to play real money games, you must be 18 years of age and you should not be residing in states of Assam, Nagaland, Orissa, Sikkim, Telangana and Andra Pradesh."
         return <div style={{ borderStyle: 'solid', borderColor: '#8B99AB', borderRadius: '0.3rem', borderWidth: '0.5px', boxSizing: 'border-box', padding: '0.2rem', margin: '0.5rem 0' }}>
-            <span style={{ fontSize: 9, color: '#8B99AB' }}>{text}</span>
+            <div style={{ fontSize: 10, color: '#8B99AB' }}>{text}</div>
         </div>
     }
 
