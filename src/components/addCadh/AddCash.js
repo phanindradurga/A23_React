@@ -99,7 +99,7 @@ const AddCash = () => {
                 "address": "A23 Sample address"
             },
             "theme": {
-                "color": "#3399cc"
+                "color": "#eabf69"
             }
 
         };
@@ -115,7 +115,7 @@ const AddCash = () => {
         razorpay.open();
     }
 
-    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ4cmZ5Z29zNHBtaWJnY3YiLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE2IiwibW9iaWxlIjoiKzkxODIzNTIzNDIzNCIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiMmMzYjg5MWZhMjE4YTM0YSIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4MjE3NzAwLCJleHAiOjE2NTgzMDQxMDB9.mURubXThxbaVtt8mmOyI9gz1GLyUlpzkQI2NGppDbck"
+    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2YW81cHFzcmNhYWlwcmciLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE3IiwibW9iaWxlIjoiKzkxNjg4NjUzNzM2NyIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiMmMzYjg5MWZhMjE4YTM0YSIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4MjM1NzY3LCJleHAiOjE2NTgzMjIxNjd9.vxWZ_Krh_l3WZ3O_EHV5Witl2Q67MXLPvTUbiB1Gjjk"
 
     const fetchConsolidatedAddCashDetails = async () => {
         const headers = {
