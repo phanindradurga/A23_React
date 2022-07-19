@@ -15,10 +15,28 @@ var bonusSelected = undefined
 var lockedBonus = 0
 var instantBonus = 0
 
+
+const loadPaymentAggregatorScript = async (src) => {
+    return new Promise((resolve) => {
+        const script = document.createElement('script');
+        console.log("Src: ", src);
+        script.src = src;
+        script.onload = () => {
+            resolve(true);
+        }
+        script.onerror = () => {
+            resolve(false);
+        }
+        document.body.appendChild(script);
+        // console.log("Script: ", script);
+    })
+}
+
 const AddCash = () => {
 
 
     const [open, setOpen] = useState(false);
+    const [manualEnteredBonus, setManualEnteredBonus] = useState("")
 
     const [validationError, setValidationError] = useState("")
 
@@ -45,6 +63,54 @@ const AddCash = () => {
     const isAmountAutoSelected = false
 
     const inputRef = useRef(null);
+
+
+    useEffect(() => {
+        loadPaymentAggregatorScript('https://checkout.razorpay.com/v1/checkout.js');
+    }, [])
+
+
+    async function initRazorPayPayment(orderInfo) {
+        console.log("loading Razor pay: *", orderInfo.data.payloadData);
+
+
+
+        var options = {
+            "key": "rzp_test_QYJZ9Ug0K4d7ky", // Enter the Key ID generated from the Dashboard
+            "amount": orderInfo.data.payloadData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Acme Corp1",
+            "description": "Test Transaction",
+            "image": "https://localhost:2323/logo.svg",
+            "order_id": orderInfo.data.payloadData.razorPayOrderId,
+            "handler": function (response) {
+                console.log("payment response ", response);
+            },
+
+            "prefill": {
+                "name": "A23 User",
+                "email": "a23@a23.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "A23 Sample address"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+
+        };
+
+        var razorpay = new window.Razorpay(options);
+
+        razorpay.on('payment.failed', function (response) {
+            console.log("Payment got failed", response);
+        });
+
+
+
+        razorpay.open();
+    }
 
     const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ4cmZ5Z29zNHBtaWJnY3YiLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE2IiwibW9iaWxlIjoiKzkxODIzNTIzNDIzNCIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiMmMzYjg5MWZhMjE4YTM0YSIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4MjE3NzAwLCJleHAiOjE2NTgzMDQxMDB9.mURubXThxbaVtt8mmOyI9gz1GLyUlpzkQI2NGppDbck"
 
@@ -164,7 +230,8 @@ const AddCash = () => {
         }
         await axios.post(url, body, { headers })
             .then((response => {
-                setConsolidatedAddCashDetails(response.data);
+
+                initRazorPayPayment(response)
 
             }))
             .catch((e) => { console.log('error here', e) })
@@ -259,15 +326,22 @@ const AddCash = () => {
                         <span style={{ fontSize: 12, fontWeight: 600 }}>Enter Bonus Code</span>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'row', height: '75%', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', margin: '0 0.5rem' }}>
-                        <input style={{ flexGrow: 1, fontSize: 16, padding: '0.5rem' }} placeholder='Enter Bonus Code' />
+                        <input style={{ flexGrow: 1, fontSize: 16, padding: '0.5rem' }} value={manualEnteredBonus} placeholder='Enter Bonus Code' onChange={(e) => {
+                            const value = e.target.value.replace(/[^0-9a-zA-Z]+/ig, "").toUpperCase()
+                            setManualEnteredBonus(value)
+                        }} maxLength={10} />
                         <div style={{ ...styles.btnContainer }}>
-                            <div style={{ ...styles.btn, marginBottom: '0' }} >Apply</div>
+                            <div style={{ ...styles.btn, marginBottom: '0' }} onClick={() => applyManualEneteredBonusCode()}>Apply</div>
                         </div>
                     </div>
                 </div>
 
             </div>
         )
+    }
+
+    const applyManualEneteredBonusCode = () => {
+        console.log("manualEnteredBonus", consolidatedAddCashDetails.playerbonus.listOfBonus);
     }
 
     const handleBonusApply = (bonus) => {
@@ -301,11 +375,12 @@ const AddCash = () => {
                     <span style={{ fontSize: 20 }} onClick={() => focusOnInput()}>
                         ₹
                     </span>
-                    <input ref={inputRef} value={addCashAmount} onChange={(event) => {
+                    <input maxLength={10} ref={inputRef} value={addCashAmount} onChange={(event) => {
+                        const value = event.target.value.replace(/\D/g, "");
                         setSelectedAmountPos(-1)
-                        setAddCashAmount(event.target.value)
-                        calculateBonus(event.target.value)
-                        setErrorMessage(event.target.value)
+                        setAddCashAmount(value)
+                        calculateBonus(value)
+                        setErrorMessage(value)
 
                     }} style={{ flexGrow: 1, background: 'transparent', borderStyle: 'none', border: 0, outline: 'none', paddingBottom: '0.5rem', fontSize: 22, fontWeight: 600 }} />
                     <div style={{ fontSize: 8, color: 'gray', display: 'flex', justifyContent: 'center', alignSelf: 'center' }} onClick={() => focusOnInput()}>(₹25 to ₹10000)</div>
@@ -327,7 +402,6 @@ const AddCash = () => {
                             </div>
                         })
                     }
-
 
                 </div>
 
