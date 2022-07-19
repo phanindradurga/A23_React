@@ -1,11 +1,11 @@
 import React from "react";
 import backArrow from '../../images/pf_header_arrow.png'
 import a23Logo from '../../images/pf_a23_logo.png'
-import * as animationData from '../../images/pf_successful_payment.json'
+import animationData from '../../images/pf_successful_payment.json'
 import Lottie from "react-lottie";
 
 
-const AddCashStatus = () => {
+const AddCashStatus = ({ gobackClick }) => {
 
     const defaultOptions = {
         loop: true,
@@ -18,7 +18,7 @@ const AddCashStatus = () => {
 
     const navHeader = () => {
         return <div style={{ ...styles.navHeader }}>
-            <img src={backArrow} style={{ width: '24px', height: '24px', marginRight: '10px' }} />
+            <img src={backArrow} style={{ width: '24px', height: '24px', marginRight: '10px' }} onClick={() => { gobackClick() }} />
             <div style={{ display: 'flex', fontWeight: 600, color: '#032146' }}>
                 Add Cash
             </div>
@@ -46,7 +46,7 @@ const AddCashStatus = () => {
             </div>
 
             <div style={{ ...styles.btnContainer }}>
-                <div style={{ ...styles.btn }} >GO BACK</div>
+                <div style={{ ...styles.btn }} onClick={() => { gobackClick() }}>GO BACK</div>
             </div>
 
         </div>

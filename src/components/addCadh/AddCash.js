@@ -9,6 +9,7 @@ import a23CaresIcon from '../../images/pf_a23cares_iv_new.png'
 import axios from 'axios'
 import BonusDetailsDialog from './BonusDeatilsDialog'
 import { getNodeText } from '@testing-library/react'
+import AddCashStatus from './AddCashStatus'
 
 var bonusSelected = undefined
 
@@ -61,6 +62,7 @@ const AddCash = () => {
     const [addCashAmount, setAddCashAmount] = useState("")
     const [appliedCode, setAppliedBonusCode] = useState("")
     const isAmountAutoSelected = false
+    const [showAddCashStatus, setShowAddCashStatus] = useState(false)
 
     const inputRef = useRef(null);
 
@@ -84,7 +86,8 @@ const AddCash = () => {
             "image": "https://play-lh.googleusercontent.com/5tZYyFuHb9Gf2OkXbuZuQzqWHdPq0S-6Wo79wTFNFackRwnUKQ9AqY3JRYGtdBUaMsY",
             "order_id": orderInfo.data.payloadData.razorPayOrderId,
             "handler": function (response) {
-                console.log("payment response ", response);
+                console.log(response);
+                setShowAddCashStatus(true)
             },
 
             "prefill": {
@@ -104,7 +107,7 @@ const AddCash = () => {
         var razorpay = new window.Razorpay(options);
 
         razorpay.on('payment.failed', function (response) {
-            console.log("Payment got failed", response);
+
         });
 
 
@@ -191,6 +194,10 @@ const AddCash = () => {
 
 
 
+    }
+
+    const gobackClick = () => {
+        setShowAddCashStatus(false)
     }
 
     const setDefaultAddCashSuggestion = () => {
@@ -452,13 +459,16 @@ const AddCash = () => {
 
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-            {navHeader()}
-            {body()}
-            {addCashFooter()}
-
-            <BonusDetailsDialog open={open} closeClick={handleToClose} bonusInfo={bonusSelected} handleBonusApply={handleBonusApply} appliedCode={appliedCode} />
+        <div>
+            {showAddCashStatus ? <AddCashStatus gobackClick={gobackClick} /> : <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+                {navHeader()}
+                {body()}
+                {addCashFooter()}
+                <BonusDetailsDialog open={open} closeClick={handleToClose} bonusInfo={bonusSelected} handleBonusApply={handleBonusApply} appliedCode={appliedCode} />
+            </div>}
         </div>
+
+
     )
 }
 
