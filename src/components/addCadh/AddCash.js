@@ -46,7 +46,7 @@ const AddCash = () => {
 
     const inputRef = useRef(null);
 
-    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ4cmZ5Z29zNHBtaWJnY3YiLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE2IiwibW9iaWxlIjoiKzkxODIzNTIzNDIzNCIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiMmMzYjg5MWZhMjE4YTM0YSIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4MjE1MDQyLCJleHAiOjE2NTgzMDE0NDJ9.Ud2NwpYDyM2rL_Bc3Bl6IkaG2_xYYjDOZLSdK7Kn4Uw"
+    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ4cmZ5Z29zNHBtaWJnY3YiLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE2IiwibW9iaWxlIjoiKzkxODIzNTIzNDIzNCIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiMmMzYjg5MWZhMjE4YTM0YSIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4MjE3NzAwLCJleHAiOjE2NTgzMDQxMDB9.mURubXThxbaVtt8mmOyI9gz1GLyUlpzkQI2NGppDbck"
 
     const fetchConsolidatedAddCashDetails = async () => {
         const headers = {
@@ -284,6 +284,15 @@ const AddCash = () => {
         }
     }
 
+    const setErrorMessage = (amount) => {
+        // if (amount === "") {
+        //     setValidationError("Edo okati enter chey")
+        // } else if (parseInt(amount) < bonusInfo.minPurchase) {
+        //     setValidationError("")
+        // }
+
+    }
+
     const enterAmountView = () => {
         return (
             <div style={{ ...styles.enterAmountContainer }}>
@@ -296,6 +305,7 @@ const AddCash = () => {
                         setSelectedAmountPos(-1)
                         setAddCashAmount(event.target.value)
                         calculateBonus(event.target.value)
+                        setErrorMessage(event.target.value)
 
                     }} style={{ flexGrow: 1, background: 'transparent', borderStyle: 'none', border: 0, outline: 'none', paddingBottom: '0.5rem', fontSize: 22, fontWeight: 600 }} />
                     <div style={{ fontSize: 8, color: 'gray', display: 'flex', justifyContent: 'center', alignSelf: 'center' }} onClick={() => focusOnInput()}>(₹25 to ₹10000)</div>
