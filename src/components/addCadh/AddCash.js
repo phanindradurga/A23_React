@@ -20,6 +20,8 @@ const AddCash = () => {
 
     const [open, setOpen] = useState(false);
 
+    const [validationError, setValidationError] = useState("")
+
     const [bonusInfo, setBonusInfo] = useState({
         "amount": -1,
         "bonus": -1
@@ -44,7 +46,7 @@ const AddCash = () => {
 
     const inputRef = useRef(null);
 
-    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ4cmZ5Z29zNHBtaWJnY3YiLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE2IiwibW9iaWxlIjoiKzkxODIzNTIzNDIzNCIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiMmMzYjg5MWZhMjE4YTM0YSIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4MTYzMDk2LCJleHAiOjE2NTgyNDk0OTZ9.t_ICNDlAoJIL0DgGMzsIP_4xMNUoKREQOjf-kQ6joig"
+    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ4cmZ5Z29zNHBtaWJnY3YiLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE2IiwibW9iaWxlIjoiKzkxODIzNTIzNDIzNCIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiMmMzYjg5MWZhMjE4YTM0YSIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4MjE1MDQyLCJleHAiOjE2NTgzMDE0NDJ9.Ud2NwpYDyM2rL_Bc3Bl6IkaG2_xYYjDOZLSdK7Kn4Uw"
 
     const fetchConsolidatedAddCashDetails = async () => {
         const headers = {
@@ -147,6 +149,27 @@ const AddCash = () => {
         calculateBonus(consolidatedAddCashDetails.suggestions.R0Suggestions[index].amount)
     }
 
+    const fetchJusPayPayload = async () => {
+        console.log("appliedCode", appliedCode);
+        console.log("addCashAmount", addCashAmount);
+
+        var url = "https://api.qapfgames.com/a23pg/process_payload_sign/"
+        url = "https://api.qapfgames.com/a23pg-razorpay/initiate_payload_and_sign/"
+        const body = {
+            "amount": addCashAmount, "channel": 'A23APS',
+            "bonusCode": appliedCode, "isAcePoints": false, "apRedeemRequested": 0, "PPR": false, "pprMargin": {}, "gpsState": 'Telangana'
+        }
+        const headers = {
+            "Authorization": A23_TOKEN
+        }
+        await axios.post(url, body, { headers })
+            .then((response => {
+                setConsolidatedAddCashDetails(response.data);
+
+            }))
+            .catch((e) => { console.log('error here', e) })
+    }
+
     const navHeader = () => {
         return <div style={{ ...styles.navHeader }}>
             <img src={backArrow} style={{ width: '24px', height: '24px', marginRight: '10px' }} />
@@ -167,6 +190,9 @@ const AddCash = () => {
                 {enterAmountView()}
                 <div style={{ margin: '0.5rem 0' }}><span style={{ fontSize: 16, fontWeight: 500 }} >Bonus code</span> <span style={{ fontSize: 16, color: 'green', fontWeight: 500 }}>{appliedCode}</span>  <span style={{ fontSize: 16, fontWeight: 500 }}>applied</span></div>
                 {getBonusLayout()}
+
+
+
                 {getAddCashNodeText()}
                 <img src={a23CaresIcon} style={{ width: '60%', alignSelf: 'center', margin: '0.5rem 0' }} />
             </div>
@@ -184,7 +210,7 @@ const AddCash = () => {
     const getBonusLayout = () => {
 
         return (
-            <div style={{ display: 'flex', width: '95%', height: '150px', flexDirection: 'row', overflow: 'hidden', overflowY: 'hidden', overflowX: 'scroll' }}>
+            <div style={{ display: 'flex', height: '150px', flexDirection: 'row', overflowY: 'hidden', overflowX: 'scroll' }}>
                 {(consolidatedAddCashDetails
                     && consolidatedAddCashDetails.playerbonus
                     && consolidatedAddCashDetails.playerbonus.listOfBonus
@@ -193,10 +219,11 @@ const AddCash = () => {
                     consolidatedAddCashDetails.playerbonus.listOfBonus.map((bonus) => {
                         return bonus.hiddenBonusFlag === false && <div key={bonus.bonusCode} style={{
                             display: 'flex',
-                            width: '1000px',
+                            width: '400px',
                             marginRight: '1rem',
                             flexDirection: 'column',
                             height: '140px',
+                            float: 'left',
                             backgroundSize: '100% 100%', backgroundImage: `url(${bonusCouponBg})`
                         }}>
 
@@ -223,7 +250,22 @@ const AddCash = () => {
                             </div>
                         </div>
                     })
+
+
                 }
+
+                <div style={{ backgroundSize: '100% 100%', backgroundImage: `url(${bonusCouponBg})`, display: 'flex', flexDirection: 'column', width: "100%", height: 140 }}>
+                    <div style={{ height: '25%', justifyContent: 'space-between', display: 'flex', alignItems: 'center', padding: '0 0.6rem' }}>
+                        <span style={{ fontSize: 12, fontWeight: 600 }}>Enter Bonus Code</span>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'row', height: '75%', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', margin: '0 0.5rem' }}>
+                        <input style={{ flexGrow: 1, fontSize: 16, padding: '0.5rem' }} placeholder='Enter Bonus Code' />
+                        <div style={{ ...styles.btnContainer }}>
+                            <div style={{ ...styles.btn, marginBottom: '0' }} >Apply</div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         )
     }
@@ -259,7 +301,7 @@ const AddCash = () => {
                     <div style={{ fontSize: 8, color: 'gray', display: 'flex', justifyContent: 'center', alignSelf: 'center' }} onClick={() => focusOnInput()}>(₹25 to ₹10000)</div>
                 </div>
 
-                <span style={{ margin: '0.5rem 0', fontSize: 12, color: 'red' }}>Pleae enter amount</span>
+                <span style={{ margin: '0.5rem 0', fontSize: 12, color: 'red' }}>{validationError}</span>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
 
@@ -318,7 +360,7 @@ const AddCash = () => {
                 </div>
                     : <span style={{ margin: '0.5rem 0' }}> ₹{addCashAmount}</span>}
                 <div style={{ ...styles.btnContainer, marginTop: '0.5rem' }}>
-                    <div style={{ ...styles.btn, width: '70vw', textAlign: 'center', padding: '0.5rem', fontSize: 20 }} >Add ₹{addCashAmount}</div>
+                    <div style={{ ...styles.btn, width: '70vw', textAlign: 'center', padding: '0.5rem', fontSize: 20 }} onClick={() => fetchJusPayPayload()}>Add ₹{addCashAmount}</div>
                 </div>
             </div>
         )
