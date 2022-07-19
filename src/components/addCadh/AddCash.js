@@ -197,6 +197,14 @@ const AddCash = () => {
     }
 
     const gobackClick = () => {
+        setAddCashAmount("")
+        setAppliedBonusCode("NA")
+        setManualEnteredBonus("")
+        setBonusInfo({
+            "amount": -1,
+            "bonus": -1
+        })
+        setSelectedAmountPos(-1)
         setShowAddCashStatus(false)
     }
 
