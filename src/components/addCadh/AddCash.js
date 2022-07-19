@@ -71,7 +71,7 @@ const AddCash = () => {
 
 
     async function initRazorPayPayment(orderInfo) {
-        console.log("loading Razor pay: *", orderInfo.data.payloadData);
+        console.log("loading Razor pay: *", orderInfo);
 
 
 
@@ -81,7 +81,7 @@ const AddCash = () => {
             "currency": "INR",
             "name": "Acme Corp1",
             "description": "Test Transaction",
-            "image": "https://localhost:2323/logo.svg",
+            "image": "https://play-lh.googleusercontent.com/5tZYyFuHb9Gf2OkXbuZuQzqWHdPq0S-6Wo79wTFNFackRwnUKQ9AqY3JRYGtdBUaMsY",
             "order_id": orderInfo.data.payloadData.razorPayOrderId,
             "handler": function (response) {
                 console.log("payment response ", response);
@@ -223,7 +223,7 @@ const AddCash = () => {
         url = "https://api.qapfgames.com/a23pg-razorpay/initiate_payload_and_sign/"
         const body = {
             "amount": addCashAmount, "channel": 'A23APS',
-            "bonusCode": appliedCode, "isAcePoints": false, "apRedeemRequested": 0, "PPR": false, "pprMargin": {}, "gpsState": 'Telangana'
+            "bonusCode": appliedCode === "" ? "NA" : appliedCode, "isAcePoints": false, "apRedeemRequested": 0, "PPR": false, "pprMargin": {}, "gpsState": 'Telangana'
         }
         const headers = {
             "Authorization": A23_TOKEN
