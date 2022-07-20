@@ -60,6 +60,7 @@ const AddCash = () => {
 
     const [open, setOpen] = useState(false);
     const [manualEnteredBonus, setManualEnteredBonus] = useState("")
+    const [manualBonusErrorMsg, setmanualBonusErrorMsg] = useState("")
 
     const [validationError, setValidationError] = useState("")
 
@@ -384,15 +385,22 @@ const AddCash = () => {
                     <div style={{ height: '25%', justifyContent: 'space-between', display: 'flex', alignItems: 'center', padding: '0 0.6rem' }}>
                         <span style={{ fontSize: 12, fontWeight: 600 }}>Enter Bonus Code</span>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'row', height: '75%', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', margin: '0 0.5rem' }}>
-                        <input style={{ flexGrow: 1, fontSize: 16, padding: '0.5rem' }} value={manualEnteredBonus} placeholder='Enter Bonus Code' onChange={(e) => {
-                            const value = e.target.value.replace(/[^0-9a-zA-Z]+/ig, "").toUpperCase()
-                            setManualEnteredBonus(value)
-                        }} maxLength={10} />
-                        <div style={{ ...styles.btnContainer }}>
-                            <div style={{ ...styles.btn, marginBottom: '0' }} onClick={() => applyManualEneteredBonusCode()}>{manualEnteredBonus === appliedCode ? 'Applied' : 'Apply'}</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', height: '75%', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', margin: '0.5rem 0.5rem' }}>
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                            <input style={{ flexGrow: 1, fontSize: 16, padding: '0.5rem' }} value={manualEnteredBonus} placeholder='Enter Bonus Code' onChange={(e) => {
+                                const value = e.target.value.replace(/[^0-9a-zA-Z]+/ig, "").toUpperCase()
+                                if (value === "") {
+                                    setmanualBonusErrorMsg("")
+                                }
+                                setManualEnteredBonus(value)
+                            }} maxLength={10} />
+                            <div style={{ ...styles.btnContainer, marginBottom: 0 }}>
+                                <div style={{ ...styles.btn }} onClick={() => applyManualEneteredBonusCode()}>{manualEnteredBonus === appliedCode ? 'Applied' : 'Apply'}</div>
+                            </div>
                         </div>
+                        <div style={{ alignSelf: 'flex-start', marginTop: '0.2rem', color: 'red', fontSize: 12 }}>{manualBonusErrorMsg}</div>
                     </div>
+
                 </div>
 
             </div>
@@ -403,7 +411,11 @@ const AddCash = () => {
         const bonusToApply = consolidatedAddCashDetails.playerbonus.listOfBonus.filter((bonus) => bonus.bonusCode.toUpperCase() === manualEnteredBonus.toUpperCase())
         console.log("length ", bonusToApply.length);
         if (bonusToApply.length > 0) {
+            setmanualBonusErrorMsg("")
+            setManualEnteredBonus("")
             handleBonusApply(bonusToApply[0])
+        } else {
+            setmanualBonusErrorMsg("Invalid Bonus Code")
         }
     }
 
