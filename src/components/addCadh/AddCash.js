@@ -10,18 +10,39 @@ import axios from 'axios'
 import BonusDetailsDialog from './BonusDeatilsDialog'
 import { getNodeText } from '@testing-library/react'
 import AddCashStatus from './AddCashStatus'
+import { SmsOutlined } from '@material-ui/icons'
 
 var bonusSelected = undefined
 
 var lockedBonus = 0
 var instantBonus = 0
 
+const paymentGateway = 1 //0 - razorpay, 1- juspay
 
 const loadPaymentAggregatorScript = async (src) => {
     return new Promise((resolve) => {
         const script = document.createElement('script');
         console.log("Src: ", src);
         script.src = src;
+        script.onload = () => {
+            resolve(true);
+        }
+        script.onerror = () => {
+            resolve(false);
+        }
+        document.body.appendChild(script);
+        // console.log("Script: ", script);
+    })
+}
+
+const loadjusPayAggregatorScript = async (src) => {
+    return new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.clientId = "A23Games_android"
+        script.service = "in.juspay.hyperpay"
+
+        console.log("Src: ", src);
+
         script.onload = () => {
             resolve(true);
         }
@@ -68,14 +89,28 @@ const AddCash = () => {
 
 
     useEffect(() => {
-        loadPaymentAggregatorScript('https://checkout.razorpay.com/v1/checkout.js');
+        if (paymentGateway == 0) {
+            loadPaymentAggregatorScript('https://checkout.razorpay.com/v1/checkout.js');
+        } else {
+            loadjusPayAggregatorScript('https://public.releases.juspay.in/hyper-sdk-web/HyperServices.js')
+
+        }
+
     }, [])
 
 
+    const initJusPayPayment = (orderInfo) => {
+        var paymentPageDiv = document.querySelector("#juspayDiv");
+        var juspayIframe = document.createElement("iframe");
+        juspayIframe.src = 'https://sandbox.juspay.in/orders/ordeh_eac0193d9d5541feb03ad295899c0df1/payment-page';
+        juspayIframe.width = "1000";
+        juspayIframe.height = "920";
+        paymentPageDiv.appendChild(juspayIframe);
+
+    }
+
     async function initRazorPayPayment(orderInfo) {
         console.log("loading Razor pay: *", orderInfo);
-
-
 
         var options = {
             "key": "rzp_test_QYJZ9Ug0K4d7ky", // Enter the Key ID generated from the Dashboard
@@ -235,7 +270,9 @@ const AddCash = () => {
         console.log("addCashAmount", addCashAmount);
 
         var url = "https://api.qapfgames.com/a23pg/process_payload_sign/"
-        url = "https://api.qapfgames.com/a23pg-razorpay/initiate_payload_and_sign/"
+        if (paymentGateway == 0) {
+            url = "https://api.qapfgames.com/a23pg-razorpay/initiate_payload_and_sign/"
+        }
         const body = {
             "amount": addCashAmount, "channel": 'A23APS',
             "bonusCode": appliedCode === "" ? "NA" : appliedCode, "isAcePoints": false, "apRedeemRequested": 0, "PPR": false, "pprMargin": {}, "gpsState": 'Telangana'
@@ -244,11 +281,17 @@ const AddCash = () => {
             "Authorization": A23_TOKEN
         }
         await axios.post(url, body, { headers })
-            .then((response => {
+            .then((response) => {
 
-                initRazorPayPayment(response)
+                if (paymentGateway == 0) {
+                    initRazorPayPayment(response)
+                } else {
+                    initJusPayPayment(response)
+                }
 
-            }))
+
+
+            })
             .catch((e) => { console.log('error here', e) })
     }
 
@@ -468,6 +511,7 @@ const AddCash = () => {
 
     return (
         <div>
+            <div id="juspayDiv"></div>
             {showAddCashStatus ? <AddCashStatus gobackClick={gobackClick} /> : <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
                 {navHeader()}
                 {body()}
