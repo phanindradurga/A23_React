@@ -390,7 +390,7 @@ const AddCash = () => {
                             setManualEnteredBonus(value)
                         }} maxLength={10} />
                         <div style={{ ...styles.btnContainer }}>
-                            <div style={{ ...styles.btn, marginBottom: '0' }} onClick={() => applyManualEneteredBonusCode()}>Apply</div>
+                            <div style={{ ...styles.btn, marginBottom: '0' }} onClick={() => applyManualEneteredBonusCode()}>{manualEnteredBonus === appliedCode ? 'Applied' : 'Apply'}</div>
                         </div>
                     </div>
                 </div>
@@ -400,7 +400,11 @@ const AddCash = () => {
     }
 
     const applyManualEneteredBonusCode = () => {
-        console.log("manualEnteredBonus", consolidatedAddCashDetails.playerbonus.listOfBonus);
+        const bonusToApply = consolidatedAddCashDetails.playerbonus.listOfBonus.filter((bonus) => bonus.bonusCode.toUpperCase() === manualEnteredBonus.toUpperCase())
+        console.log("length ", bonusToApply.length);
+        if (bonusToApply.length > 0) {
+            handleBonusApply(bonusToApply[0])
+        }
     }
 
     const handleBonusApply = (bonus) => {
