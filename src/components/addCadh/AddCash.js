@@ -38,6 +38,7 @@ const loadPaymentAggregatorScript = async (src) => {
 const loadjusPayAggregatorScript = async (src) => {
     return new Promise((resolve) => {
         const script = document.createElement('script');
+        script.src = src
         script.clientId = "A23Games_android"
         script.service = "in.juspay.hyperpay"
 
