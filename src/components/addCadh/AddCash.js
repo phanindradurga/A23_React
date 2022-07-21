@@ -152,7 +152,7 @@ const AddCash = () => {
         razorpay.open();
     }
 
-    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2YW81cHFzcmNhYWlwcmciLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE3IiwibW9iaWxlIjoiKzkxNjg4NjUzNzM2NyIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiMmMzYjg5MWZhMjE4YTM0YSIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4MjM1NzY3LCJleHAiOjE2NTgzMjIxNjd9.vxWZ_Krh_l3WZ3O_EHV5Witl2Q67MXLPvTUbiB1Gjjk"
+    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2YW81cHFzcmNhYWlwcmciLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE3IiwibW9iaWxlIjoiKzkxNjg4NjUzNzM2NyIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiOGI3YzlhNzYxMTM5ZDQxMiIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4Mzk5MDE1LCJleHAiOjE2NTg0ODU0MTV9.IwxBNpuk8brCnfdOIo8LBwoNJ0EHxPnvjpdJea_XNKE"
 
     const fetchConsolidatedAddCashDetails = async () => {
         const headers = {
@@ -443,6 +443,8 @@ const AddCash = () => {
     }
 
     const enterAmountView = () => {
+        const min = consolidatedAddCashDetails && consolidatedAddCashDetails.playerbonus && consolidatedAddCashDetails.playerbonus.minAmountAddCashInput ? consolidatedAddCashDetails.playerbonus.minAmountAddCashInput : ""
+        const max = consolidatedAddCashDetails && consolidatedAddCashDetails.playerbonus && consolidatedAddCashDetails.playerbonus.maxAmountAddCashInput ? consolidatedAddCashDetails.playerbonus.maxAmountAddCashInput : ""
         return (
             <div style={{ ...styles.enterAmountContainer }}>
                 <div style={{ fontSize: 16, fontWeight: 400 }}>Enter Amount</div>
@@ -458,7 +460,7 @@ const AddCash = () => {
                         setErrorMessage(value)
 
                     }} style={{ flexGrow: 1, background: 'transparent', borderStyle: 'none', border: 0, outline: 'none', paddingBottom: '0.5rem', fontSize: 22, fontWeight: 600 }} />
-                    <div style={{ fontSize: 8, color: 'gray', display: 'flex', justifyContent: 'center', alignSelf: 'center' }} onClick={() => focusOnInput()}>(₹25 to ₹10000)</div>
+                    <div style={{ fontSize: 8, color: 'gray', display: 'flex', justifyContent: 'center', alignSelf: 'center' }} onClick={() => focusOnInput()}>(₹{min} to ₹{max})</div>
                 </div>
 
                 <span style={{ margin: '0.5rem 0', fontSize: 12, color: 'red' }}>{validationError}</span>
@@ -519,7 +521,7 @@ const AddCash = () => {
                 </div>
                     : <span style={{ margin: '0.5rem 0' }}> ₹{addCashAmount}</span>}
                 <div style={{ ...styles.btnContainer, marginTop: '0.5rem' }}>
-                    <div style={{ ...styles.btn, width: '70vw', textAlign: 'center', padding: '0.5rem', fontSize: 20 }} onClick={() => fetchJusPayPayload()}>Add ₹{addCashAmount}</div>
+                    <div style={{ ...(consolidatedAddCashDetails && consolidatedAddCashDetails.playerbonus && addCashAmount < consolidatedAddCashDetails.playerbonus.minAmountAddCashInput ? styles.btnDisabled : styles.btn), width: '70vw', textAlign: 'center', padding: '0.5rem', fontSize: 20 }} onClick={() => fetchJusPayPayload()}>Add ₹{addCashAmount}</div>
                 </div>
             </div>
         )
@@ -567,6 +569,15 @@ const styles = {
         fontWeight: '500',
         fontSize: 16,
         color: 'white', padding: '0.2rem 1.2rem',
+        borderStyle: 'solid', borderRadius: '0.5rem',
+
+    },
+    btnDisabled: {
+        background: 'white',
+        fontWeight: '500',
+        fontSize: 16,
+        color: 'gray', padding: '0.2rem 1.2rem',
+        borderColor: 'gray',
         borderStyle: 'solid', borderRadius: '0.5rem',
 
     },
