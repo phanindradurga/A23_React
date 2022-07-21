@@ -268,6 +268,15 @@ const AddCash = () => {
     }
 
     const fetchJusPayPayload = async () => {
+
+
+        const canProceed = consolidatedAddCashDetails && consolidatedAddCashDetails.playerbonus && addCashAmount >= consolidatedAddCashDetails.playerbonus.minAmountAddCashInput
+
+        if (!canProceed) {
+            return
+        }
+
+
         console.log("appliedCode", appliedCode);
         console.log("addCashAmount", addCashAmount);
 
