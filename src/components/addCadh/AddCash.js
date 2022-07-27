@@ -11,49 +11,22 @@ import BonusDetailsDialog from './BonusDeatilsDialog'
 import { getNodeText } from '@testing-library/react'
 import AddCashStatus from './AddCashStatus'
 import { SmsOutlined } from '@material-ui/icons'
+import uuid from 'react-uuid'
+
 
 var bonusSelected = undefined
 
 var lockedBonus = 0
 var instantBonus = 0
+var hyperServiceObject
 
 const paymentGateway = 1 //0 - razorpay, 1- juspay
+const juspayClientID = "A23Games_web"
+const merchantId = "A23Games"
+const merchantKeyId = "4394"  // QA - 4394, Production - 10111
+const juspayENV = "sandbox"; // possible values - sandbox, production
 
-const loadPaymentAggregatorScript = async (src) => {
-    return new Promise((resolve) => {
-        const script = document.createElement('script');
-        console.log("Src: ", src);
-        script.src = src;
-        script.onload = () => {
-            resolve(true);
-        }
-        script.onerror = () => {
-            resolve(false);
-        }
-        document.body.appendChild(script);
-        // console.log("Script: ", script);
-    })
-}
 
-const loadjusPayAggregatorScript = async (src) => {
-    return new Promise((resolve) => {
-        const script = document.createElement('script');
-        script.src = src
-        script.clientId = "A23Games_android"
-        script.service = "in.juspay.hyperpay"
-
-        console.log("Src: ", src);
-
-        script.onload = () => {
-            resolve(true);
-        }
-        script.onerror = () => {
-            resolve(false);
-        }
-        document.body.appendChild(script);
-        // console.log("Script: ", script);
-    })
-}
 
 const AddCash = () => {
 
@@ -86,7 +59,7 @@ const AddCash = () => {
     const [appliedCode, setAppliedBonusCode] = useState("")
     const isAmountAutoSelected = false
     const [showAddCashStatus, setShowAddCashStatus] = useState(false)
-
+    const [renderJuspay, setRenderJuspay] = useState(false)
     const inputRef = useRef(null);
 
 
@@ -102,14 +75,142 @@ const AddCash = () => {
 
 
     const initJusPayPayment = (orderInfo) => {
-        var paymentPageDiv = document.querySelector("#juspayDiv");
-        var juspayIframe = document.createElement("iframe");
-        juspayIframe.src = 'https://sandbox.juspay.in/orders/ordeh_eac0193d9d5541feb03ad295899c0df1/payment-page';
-        juspayIframe.width = "1000";
-        juspayIframe.height = "920";
-        paymentPageDiv.appendChild(juspayIframe);
+        // var paymentPageDiv = document.querySelector("#juspayDiv");
+        // var juspayIframe = document.createElement("iframe");
+        // juspayIframe.src = 'https://sandbox.juspay.in/orders/ordeh_eac0193d9d5541feb03ad295899c0df1/payment-page';
+        // juspayIframe.width = "1000";
+        // juspayIframe.height = "920";
+        // paymentPageDiv.appendChild(juspayIframe);
+        initiateJuspay(orderInfo)
+
+
 
     }
+
+    const loadPaymentAggregatorScript = async (src) => {
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            console.log("Src: ", src);
+            script.src = src;
+            script.onload = () => {
+                resolve(true);
+            }
+            script.onerror = () => {
+                resolve(false);
+            }
+            document.body.appendChild(script);
+            // console.log("Script: ", script);
+        })
+    }
+
+    const prefetchJusPay = () => {
+        const payload = {
+            "requestId": uuid(), //UUID v4 String
+            "service": "in.juspay.hyperpay",
+            "payload": {
+                "clientId": juspayClientID
+            }
+        }
+        window.HyperServices.preFetch(payload)
+    }
+
+    const initiateJuspay = (orderInfo) => {
+
+        const hyperCallbackHandler = (eventData) => {
+            try {
+                if (eventData) {
+                    const eventJSON = typeof eventData === 'string' ? JSON.parse(eventData) : eventData;
+                    const event = eventJSON.event
+
+                    var updatedPayload = JSON.parse(orderInfo.data.processPayload)
+                    // updatedPayload.return_url = "https://www.google.com"
+
+                    // Check for event key
+                    if (event == "initiate_result") {
+                        //Handle initiate result here
+                        setRenderJuspay(true)
+                        const payload = {
+                            "action": "paymentPage",
+                            "orderDetails": JSON.stringify(updatedPayload),
+                            merchantId: merchantId,
+                            merchantKeyId: merchantKeyId,
+                            clientId: juspayClientID,
+                            "signature": orderInfo.data.processSign,
+
+                        }
+                        const processPayload = {
+                            "requestId": eventData.requestId,
+                            "service": "in.juspay.hyperpay",
+                            "payload": payload
+
+                        }
+
+                        hyperServiceObject.process(processPayload)
+                    } else if (event == "process_result") {
+                        //Handle process result here
+                    } else if (event == "user_event") {
+                        //Handle Payment Page events
+                    } else {
+                        console.log("Unhandled event", event, " Event data", eventData);
+                    }
+                } else {
+                    console.log("No data received in event", eventData);
+                }
+            } catch (error) {
+                console.log("Error in hyperSDK response", error);
+            }
+        }
+
+        const initiatePayload = {
+            action: "initiate",
+            clientId: juspayClientID,
+            merchantId: merchantId,
+            merchantKeyId: merchantKeyId,
+            signaturePayload: orderInfo.data.processPayload,
+            signature: orderInfo.data.processSign,
+            environment: juspayENV,
+            integrationType: "iframe",
+            hyperSDKDiv: "juspayDiv" // Div ID to be used for rendering
+        };
+
+        const sdkPayload = {
+            service: "in.juspay.hyperpay",
+            requestId: uuid(),
+            payload: initiatePayload
+        };
+
+        hyperServiceObject.initiate(sdkPayload, hyperCallbackHandler)
+
+    }
+
+    const loadjusPayAggregatorScript = async (src) => {
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = src
+            script.clientId = juspayClientID
+            script.service = "in.juspay.hyperpay"
+
+            console.log("Src: ", src);
+
+            script.onload = () => {
+                resolve(true);
+                hyperServiceObject = new window.HyperServices()
+                prefetchJusPay()
+            }
+            script.onerror = () => {
+                resolve(false);
+            }
+            document.body.appendChild(script);
+            // console.log("Script: ", script);
+        })
+    }
+
+
+
+
+
+
+
 
     async function initRazorPayPayment(orderInfo) {
         console.log("loading Razor pay: *", orderInfo);
@@ -152,7 +253,7 @@ const AddCash = () => {
         razorpay.open();
     }
 
-    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2YW81cHFzcmNhYWlwcmciLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE3IiwibW9iaWxlIjoiKzkxNjg4NjUzNzM2NyIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiOGI3YzlhNzYxMTM5ZDQxMiIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4Mzk5MDE1LCJleHAiOjE2NTg0ODU0MTV9.IwxBNpuk8brCnfdOIo8LBwoNJ0EHxPnvjpdJea_XNKE"
+    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2YW81cHFzcmNhYWlwcmciLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE3IiwibW9iaWxlIjoiKzkxNjg4NjUzNzM2NyIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiOGI3YzlhNzYxMTM5ZDQxMiIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4OTA0NDg4LCJleHAiOjE2NTg5OTA4ODh9.Y8xTaTWhpEqcLaK0mEOR7MFOeW4inEL_WzafwRWB8GU"
 
     const fetchConsolidatedAddCashDetails = async () => {
         const headers = {
@@ -539,7 +640,8 @@ const AddCash = () => {
 
     return (
         <div>
-            <div id="juspayDiv"></div>
+            <div style={{ height: renderJuspay ? '100%' : '0', position: 'absolute', width: renderJuspay ? '100%' : '0' }} id="juspayDiv" />
+
             {showAddCashStatus ? <AddCashStatus gobackClick={gobackClick} /> : <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
                 {navHeader()}
                 {body()}
