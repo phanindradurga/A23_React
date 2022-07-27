@@ -150,6 +150,7 @@ const AddCash = () => {
                         //Handle process result here
                     } else if (event == "user_event") {
                         //Handle Payment Page events
+
                     } else {
                         console.log("Unhandled event", event, " Event data", eventData);
                     }
