@@ -8,18 +8,14 @@ import infoIcon from '../../images/pf_wallet_info_icon.png'
 import a23CaresIcon from '../../images/pf_a23cares_iv_new.png'
 import axios from 'axios'
 import BonusDetailsDialog from './BonusDeatilsDialog'
-import { getNodeText } from '@testing-library/react'
 import AddCashStatus from './AddCashStatus'
-import { SmsOutlined } from '@material-ui/icons'
 import uuid from 'react-uuid'
 
 
 var bonusSelected = undefined
-
 var lockedBonus = 0
 var instantBonus = 0
 var hyperServiceObject
-
 const paymentGateway = 1 //0 - razorpay, 1- juspay
 const juspayClientID = "A23Games_web"
 const merchantId = "A23Games"
@@ -82,9 +78,6 @@ const AddCash = () => {
         // juspayIframe.height = "920";
         // paymentPageDiv.appendChild(juspayIframe);
         initiateJuspay(orderInfo)
-
-
-
     }
 
     const loadPaymentAggregatorScript = async (src) => {
@@ -215,7 +208,6 @@ const AddCash = () => {
 
     async function initRazorPayPayment(orderInfo) {
         console.log("loading Razor pay: *", orderInfo);
-
         var options = {
             "key": "rzp_test_QYJZ9Ug0K4d7ky", // Enter the Key ID generated from the Dashboard
             "amount": orderInfo.data.payloadData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -242,19 +234,14 @@ const AddCash = () => {
             }
 
         };
-
         var razorpay = new window.Razorpay(options);
-
         razorpay.on('payment.failed', function (response) {
 
         });
-
-
-
         razorpay.open();
     }
 
-    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2YW81cHFzcmNhYWlwcmciLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE3IiwibW9iaWxlIjoiKzkxNjg4NjUzNzM2NyIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiOGI3YzlhNzYxMTM5ZDQxMiIsImNoYW5uZWwiOiJBMjNBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU4OTA0NDg4LCJleHAiOjE2NTg5OTA4ODh9.Y8xTaTWhpEqcLaK0mEOR7MFOeW4inEL_WzafwRWB8GU"
+    const A23_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1eDV1NzI3MjBkNjZxY2wiLCJzY3JlZW5OYW1lIjoiZ2hvc3RyaWRlcjE4IiwibW9iaWxlIjoiKzkxODUyMzQyNDIzNCIsInN0YXR1cyI6dHJ1ZSwiZGV2aWNlX2lkIjoiYzdhYzE5NDFiMTc2MTBlOCIsImNoYW5uZWwiOiJBUFMiLCJwbGF5ZXJTdGF0dXMiOiJudWxsIiwiaWF0IjoxNjU5NTk1NTM5LCJleHAiOjE2NTk2ODE5Mzl9.8ok7lXxYul0MvhiJtC8SLKVhXKgpKeGwvMuKRAJGEP4"
 
     const fetchConsolidatedAddCashDetails = async () => {
         const headers = {
@@ -329,10 +316,6 @@ const AddCash = () => {
                 return true
             }
         })
-
-
-
-
     }
 
     const gobackClick = () => {
@@ -370,15 +353,11 @@ const AddCash = () => {
     }
 
     const fetchJusPayPayload = async () => {
-
-
         const canProceed = consolidatedAddCashDetails && consolidatedAddCashDetails.playerbonus && addCashAmount >= consolidatedAddCashDetails.playerbonus.minAmountAddCashInput
 
         if (!canProceed) {
             return
         }
-
-
         console.log("appliedCode", appliedCode);
         console.log("addCashAmount", addCashAmount);
 
@@ -401,9 +380,6 @@ const AddCash = () => {
                 } else {
                     initJusPayPayment(response)
                 }
-
-
-
             })
             .catch((e) => { console.log('error here', e) })
     }

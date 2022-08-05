@@ -1,5 +1,4 @@
-import { Dialog, DialogContentText } from "@material-ui/core";
-import { BorderStyle, SmsOutlined } from "@material-ui/icons";
+import { Dialog } from "@material-ui/core";
 import React from "react";
 import logo from '../../images/pf_avatar_patteraj_popup.png'
 import CancelIcon from "@material-ui/icons/Cancel";
